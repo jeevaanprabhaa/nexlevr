@@ -90,7 +90,7 @@ export default function Team() {
               A team of student builders, designers, and strategists — learning in public, shipping in production, and growing with every project.
             </p>
             <motion.a
-              href="https://calendly.com/buzzinga"
+              href="mailto:janeeshpofficial@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.04, backgroundColor: '#f0d800' }}
