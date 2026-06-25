@@ -1,18 +1,18 @@
 import { motion } from 'framer-motion';
 
 const team = [
-  { name: 'Vannsh Agrawal', role: 'Founder', img: '/iXFRkht7LqgNyHSfRn6jJZcBc.png' },
-  { name: 'Maandar Devaneson', role: 'Admin + Quality Control', img: '/oqyqVRxNZSuMkf7oxhvVMym05o.png' },
-  { name: 'Raghav Tiwari', role: 'Video Editor', img: '/QNpgGWq5wUYr3AnWIyPOI7B0Wxs.png' },
-  { name: 'Yuvam Shah', role: 'Video Editor', img: '/AycIlVaE3kLT5njrZT36T00A.png' },
-  { name: 'Dheer Mehta', role: 'Content Strategist', img: '/lfe8jbDKwE4YHNrkDO6yynPdgs.png' },
-  { name: 'Bhushan Chavan', role: 'Video Editor + Graphic Designer', img: '/kabXk0ldzBWHLOiQNXEVyfIlvU.png' },
-  { name: 'Raj Mehta', role: 'Sales Lead + Website Designer', img: '/team/raj.png' },
-  { name: 'Shlok Parikh', role: 'Sales Executive', img: '/GZ3GcOsYBatBwVpcm2VUiymi6Zs.png' },
-  { name: 'Rajvansh Minglani', role: 'Sales Executive', img: '/9zilj3QVFrNjXA7UeeFgHXgrQ.png' },
-  { name: 'Sagar Saxena', role: 'A+ Video Editor', img: '/team/sagar.png' },
+  { name: 'Janeesh Pemmasani', role: 'Founder & Product Lead', img: '/iXFRkht7LqgNyHSfRn6jJZcBc.png' },
+  { name: 'Maandar Devaneson', role: 'Operations & Quality', img: '/oqyqVRxNZSuMkf7oxhvVMym05o.png' },
+  { name: 'Raghav Tiwari', role: 'Frontend Developer', img: '/QNpgGWq5wUYr3AnWIyPOI7B0Wxs.png' },
+  { name: 'Yuvam Shah', role: 'UI/UX Designer', img: '/AycIlVaE3kLT5njrZT36T00A.png' },
+  { name: 'Dheer Mehta', role: 'Strategy & Research', img: '/lfe8jbDKwE4YHNrkDO6yynPdgs.png' },
+  { name: 'Bhushan Chavan', role: 'Brand Designer', img: '/kabXk0ldzBWHLOiQNXEVyfIlvU.png' },
+  { name: 'Raj Mehta', role: 'Full Stack Developer', img: '/team/raj.png' },
+  { name: 'Shlok Parikh', role: 'Backend Developer', img: '/GZ3GcOsYBatBwVpcm2VUiymi6Zs.png' },
+  { name: 'Rajvansh Minglani', role: 'Growth & Outreach', img: '/9zilj3QVFrNjXA7UeeFgHXgrQ.png' },
+  { name: 'Sagar Saxena', role: 'Mobile Developer', img: '/team/sagar.png' },
   { name: 'Jeet Mane', role: 'Graphic Designer', img: '/bojY1eSnAQ9HiE85STCwfudg0.png' },
-  { name: 'Harsh', role: 'Video Editor', img: '/FVVY15WOUGC9ISfEfKAeUNGUmo.png' },
+  { name: 'Harsh', role: 'AI & Automation', img: '/FVVY15WOUGC9ISfEfKAeUNGUmo.png' },
 ];
 
 export default function Team() {
@@ -56,7 +56,7 @@ export default function Team() {
               letterSpacing: '-1.5px',
               color: '#111',
             }}>
-              Your growth partners
+              The builders behind the work
             </h2>
           </motion.div>
 
@@ -68,7 +68,7 @@ export default function Team() {
             style={{ maxWidth: 400 }}
           >
             <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, marginBottom: 20 }}>
-              Our team is a blend of strategists, creators, and problem-solvers — all dedicated to delivering meaningful marketing results.
+              A team of student builders, designers, and strategists — learning in public, shipping in production, and growing with every project.
             </p>
             <motion.a
               href="https://calendly.com/buzzinga"
@@ -86,7 +86,7 @@ export default function Team() {
                 fontWeight: 700,
               }}
             >
-              Contact Us →
+              Join the Team →
             </motion.a>
           </motion.div>
         </div>

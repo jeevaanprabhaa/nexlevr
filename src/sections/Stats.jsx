@@ -26,9 +26,9 @@ function CountUp({ target, suffix = '', duration = 2 }) {
 }
 
 const stats = [
-  { label: 'Brands we\'ve scaled', value: 21, suffix: '+' },
-  { label: 'Reels produced & deployed', value: 250, suffix: '+' },
-  { label: 'Revenue generated for clients', value: 70, suffix: 'L+' },
+  { label: 'Projects shipped across industries', value: 75, suffix: '+' },
+  { label: 'Client brands served', value: 16, suffix: '+' },
+  { label: 'Student builders on the team', value: 12, suffix: '+' },
 ];
 
 export default function Stats() {
@@ -63,7 +63,7 @@ export default function Stats() {
             color: '#555',
             maxWidth: 700,
           }}>
-            NexLevr builds media ecosystems that turn brands into revenue machines. From scroll-stopping content to closing-ready sales funnels. We don't just show up online — we dominate. Strategy. Execution. Results. That's the only order we know.
+            NexLevr is a student-led growth agency — built to ship real products, serve real clients, and grow real businesses. We are a team of builders, designers, and strategists who learn by doing and deliver by executing. From web platforms to brand systems to full-stack apps, we build it all under one roof.
           </p>
         </motion.div>
 

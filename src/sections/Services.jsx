@@ -2,28 +2,28 @@ import { motion } from 'framer-motion';
 
 const services = [
   {
-    title: 'Social Media',
-    desc: 'Scroll-stopping content that builds communities and drives engagement at scale.',
-    link: '#pricing',
-    icon: '📱',
+    title: 'Web Platforms',
+    desc: 'Custom web apps, SaaS dashboards, and full-stack platforms built from scratch and shipped fast.',
+    link: '#contact',
+    icon: '🌐',
   },
   {
-    title: 'Graphics',
-    desc: 'Visual identity and design systems that make your brand unmissable.',
-    link: '#pricing',
+    title: 'Brand Identity',
+    desc: 'Logo systems, visual language, and brand kits that make your business impossible to ignore.',
+    link: '#contact',
     icon: '🎨',
   },
   {
-    title: 'Sales',
-    desc: 'Funnels, scripts, and strategies engineered to close clients consistently.',
-    link: '#pricing',
-    icon: '💰',
+    title: 'UI/UX Design',
+    desc: 'User research, wireframes, and pixel-perfect interfaces designed for conversion and usability.',
+    link: '#contact',
+    icon: '✏️',
   },
   {
-    title: 'Websites',
-    desc: 'High-converting websites built to turn visitors into paying customers.',
-    link: '#pricing',
-    icon: '🌐',
+    title: 'AI Products',
+    desc: 'AI-powered tools, automations, and smart product features integrated into your workflow.',
+    link: '#contact',
+    icon: '🤖',
   },
 ];
 
@@ -69,7 +69,7 @@ export default function Services() {
             maxWidth: 600,
           }}
         >
-          What actually creates the results?
+          What we actually build for you
         </motion.h2>
 
         <div style={{
@@ -120,7 +120,7 @@ export default function Services() {
                   fontSize: 14,
                 }}
               >
-                Explore {svc.title} →
+                Start a {svc.title} project →
               </motion.a>
             </motion.div>
           ))}

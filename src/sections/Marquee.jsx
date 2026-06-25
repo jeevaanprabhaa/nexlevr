@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 
 const items = [
-  'Social Media', '✦', 'Graphics', '✦', 'Sales', '✦', 'Websites', '✦',
-  'Video Editing', '✦', 'Brand Strategy', '✦', 'Content Creation', '✦',
-  'Lead Generation', '✦', 'Funnel Building', '✦',
+  'Web Platforms', '✦', 'Brand Identity', '✦', 'UI/UX Design', '✦', 'Full Stack Apps', '✦',
+  'AI Products', '✦', 'Growth Strategy', '✦', 'Learning Platforms', '✦',
+  'Startup MVPs', '✦', 'CRM Systems', '✦',
 ];
 
 export default function Marquee({ dark = false }) {

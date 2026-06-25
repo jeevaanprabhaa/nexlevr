@@ -3,27 +3,27 @@ import { motion } from 'framer-motion';
 const steps = [
   {
     num: '01',
-    title: 'Discuss',
-    desc: 'We start with a deep-dive call to understand your brand, goals, and what success looks like for you.',
+    title: 'Discover',
+    desc: 'We start with a call to understand your business, goals, and exactly what you need built.',
   },
   {
     num: '02',
-    title: 'Plan',
-    desc: 'We build a custom media strategy — content calendar, funnel map, and execution roadmap tailored to your goals.',
+    title: 'Design',
+    desc: 'We map out the solution — wireframes, tech stack, and a clear project roadmap before a single line of code is written.',
   },
   {
     num: '03',
-    title: 'Produce',
-    desc: 'Our team executes. From shoots to edits to posting — everything is handled with precision.',
+    title: 'Build',
+    desc: 'Our team executes with precision. You get regular updates and stay in the loop at every milestone.',
   },
   {
     num: '04',
-    title: 'Speed',
-    desc: 'We iterate fast. Weekly reviews, performance tracking, and doubling down on what works.',
+    title: 'Ship',
+    desc: 'We launch, hand off, and support. Built to last — not just to demo.',
   },
 ];
 
-const services = ['Social Media Management', 'Sales', 'Website', 'Video Editing', 'Graphics'];
+const services = ['Web Platforms', 'Brand Identity', 'UI/UX Design', 'Full Stack Apps', 'AI Products'];
 
 export default function HowItWorks() {
   return (
@@ -64,10 +64,10 @@ export default function HowItWorks() {
               marginBottom: 24,
               lineHeight: 1.1,
             }}>
-              Plan your growth
+              How we work
             </h2>
             <p style={{ fontSize: 15, color: '#666', lineHeight: 1.7 }}>
-              Clear steps to scale smart and fast
+              Simple process. Real delivery.
             </p>
           </motion.div>
 
@@ -93,10 +93,10 @@ export default function HowItWorks() {
                 letterSpacing: '-2px',
                 lineHeight: 1,
               }}>
-                99<span style={{ fontSize: '0.5em' }}>%</span>
+                75<span style={{ fontSize: '0.5em' }}>+</span>
               </div>
               <p style={{ color: '#aaa', fontSize: 14, marginTop: 8 }}>
-                Scale Success Rate within 60 days
+                Projects shipped across 10+ industries
               </p>
             </div>
           </motion.div>

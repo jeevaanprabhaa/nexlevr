@@ -3,24 +3,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const faqs = [
   {
-    q: 'Do we have to buy all 4 arms or can we pick just one?',
-    a: 'You can absolutely pick just what you need — but social media is the one non-negotiable. It\'s the foundation everything else is built on. From there, every client makes 4 decisions: how many reels per month (15 or 30), whether you need us to shoot or just edit, whether you want sales and strategy bundled in, and whether you need a website. Simple. Modular. Built around you.',
+    q: 'What kind of projects does NexLevr take on?',
+    a: 'We\'ve shipped 75+ projects across restaurants, gyms, construction, interior design, e-commerce, education, boxing, CRM systems, and more. If you need it built, we\'ve probably built something like it already.',
   },
   {
-    q: 'How long before we see real results?',
-    a: 'Most brands see measurable traction within 30–45 days. Meaningful revenue impact typically shows within 60 days. We track everything from day one so you always know what\'s working.',
+    q: 'How long does a typical project take?',
+    a: 'Landing pages are done in 3–5 days. Full web apps take 2–6 weeks depending on scope. Brand identity projects typically take 1–2 weeks. We always give you a clear timeline before we start.',
   },
   {
-    q: 'What does onboarding look like?',
-    a: 'After your discovery call, we run a 72-hour brand deep-dive — understanding your voice, audience, competitors, and goals. Then we build the full content and strategy plan. You approve it, we execute.',
+    q: 'Are you actually students? Is the quality professional?',
+    a: 'Yes, we\'re a student-led team — and that\'s our advantage. We move faster, charge less, and bring fresh energy. Our portfolio speaks for itself: 75+ real projects shipped for real clients. Quality is non-negotiable.',
   },
   {
-    q: 'Do you work with brands outside India?',
-    a: 'Yes. While we\'re India-headquartered, we work with brands globally. Time zones haven\'t stopped us yet.',
+    q: 'Do you work with clients outside India?',
+    a: 'Yes. While we\'re based in India, we work with clients globally. We communicate async and sync across time zones without issues.',
   },
   {
-    q: 'How is NexLevr different from a freelancer or in-house team?',
-    a: 'Freelancers are siloed. In-house teams are expensive. NexLevr is a full media engine — strategy, content, sales, web — all under one roof, coordinated and accountable to your results, not just deliverables.',
+    q: 'How do I start a project with NexLevr?',
+    a: 'Hit "Start a Project", tell us what you need, and we\'ll set up a free discovery call. We scope the project, agree on timeline and pricing, and get to work. Simple.',
+  },
+  {
+    q: 'Do you offer internships?',
+    a: 'Yes! NexLevr runs a hands-on internship program. You\'ll work on real client projects, learn by doing, and build a portfolio that actually matters. Scroll down to the internship section or reach out directly.',
   },
 ];
 
@@ -60,7 +64,7 @@ export default function FAQ() {
             letterSpacing: '-1.5px',
             color: '#111',
           }}>
-            We've got the answers
+            Everything you want to know
           </h2>
         </motion.div>
 

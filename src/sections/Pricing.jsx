@@ -3,61 +3,61 @@ import { motion } from 'framer-motion';
 
 const plans = [
   {
-    category: 'Social Media Management',
+    category: 'Web Platforms',
     options: [
       {
-        name: '15 Reels',
-        price: '₹45,000',
-        period: '/month',
-        tag: 'Foundation',
-        features: ['Scripting', 'Editing', 'Posting', 'Full Account Management'],
-      },
-      {
-        name: '30 Reels',
-        price: '₹90,000',
-        period: '/month',
-        tag: 'Growth',
-        features: ['Everything in 15 reels', '10 Carousels included', 'Monthly content strategy', 'Full Account Management'],
-        highlight: true,
-      },
-    ],
-  },
-  {
-    category: 'Add Ons',
-    options: [
-      {
-        name: 'Shoot Package',
-        price: '₹25,000',
+        name: 'Landing Page',
+        price: '₹15,000',
         period: '',
-        tag: 'Production',
-        features: ['4 shoots per month', '8 to 10 reels covered per shoot cycle', 'Content prepped and planned by us', 'Monthly retainer, cancel anytime'],
+        tag: 'Starter',
+        features: ['Responsive design', 'Up to 5 sections', 'Contact form', 'Deployed & handed off'],
       },
       {
-        name: 'Sales + Strategy',
-        price: '₹45,000',
-        period: '',
-        tag: 'Revenue',
-        features: ['100 targeted conversions', 'Full funnel built from scratch', 'Sales call strategy and scripts', 'Everything planned, tracked, and executed'],
-        highlight: true,
-      },
-    ],
-  },
-  {
-    category: 'Website Curations',
-    options: [
-      {
-        name: 'Streamlined build',
+        name: 'Full Web App',
         price: '₹60,000',
         period: '',
-        tag: 'Standard',
-        features: ['Framer-only development', 'Designed from zero, no templates', 'Optimised for conversions', 'One-time payment'],
+        tag: 'Custom',
+        features: ['Full stack development', 'Auth & database', 'Custom dashboard', 'Ongoing support available'],
+        highlight: true,
+      },
+    ],
+  },
+  {
+    category: 'Brand Identity',
+    options: [
+      {
+        name: 'Brand Kit',
+        price: '₹8,000',
+        period: '',
+        tag: 'Essential',
+        features: ['Logo design', 'Color palette', 'Typography system', 'Brand guidelines PDF'],
       },
       {
-        name: 'Full Custom',
-        price: '₹90,000',
+        name: 'Full Identity',
+        price: '₹20,000',
         period: '',
-        tag: 'Premium',
-        features: ['Everything in Streamlined build', 'Custom micro-interactions & animations', 'CMS integration', 'One-time payment'],
+        tag: 'Complete',
+        features: ['Everything in Brand Kit', 'Social media templates', 'Business collateral', 'Source files included'],
+        highlight: true,
+      },
+    ],
+  },
+  {
+    category: 'UI/UX Design',
+    options: [
+      {
+        name: 'UI Design',
+        price: '₹12,000',
+        period: '',
+        tag: 'Design Only',
+        features: ['Up to 10 screens', 'Figma source file', 'Mobile + desktop', 'Component library'],
+      },
+      {
+        name: 'Design + Build',
+        price: '₹35,000',
+        period: '',
+        tag: 'Full Package',
+        features: ['Full UI/UX design', 'Frontend development', 'Framer or React', 'Handoff + documentation'],
         highlight: true,
       },
     ],
@@ -101,10 +101,10 @@ export default function Pricing() {
             color: '#fff',
             marginBottom: 16,
           }}>
-            All our charges displayed
+            Simple, honest pricing
           </h2>
           <p style={{ color: '#888', fontSize: 15 }}>
-            Transparent pricing. No hidden fees. Choose what you need.
+            Student-powered rates. Professional-grade output. No hidden fees.
           </p>
         </motion.div>
 
@@ -264,7 +264,7 @@ export default function Pricing() {
           }}
         >
           <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
-            Social + Shoots + Sales + Website
+            Web + Brand + Design + Apps
           </p>
           <h3 style={{
             fontSize: 'clamp(24px, 3vw, 36px)',
@@ -273,10 +273,10 @@ export default function Pricing() {
             color: '#fff',
             marginBottom: 12,
           }}>
-            You're not just buying services.
+            Need something custom?
           </h3>
           <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.8)', marginBottom: 32 }}>
-            You're buying a full media engine. Let's build yours.
+            Tell us what you're building and we'll scope it together. No pressure.
           </p>
           <motion.a
             href="#contact"

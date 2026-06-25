@@ -48,7 +48,7 @@ export default function Navbar() {
         backdropFilter: 'blur(12px)',
         border: '1px solid rgba(0,0,0,0.08)',
       }}>
-        {['About Us', 'Pricing', 'Team', 'FAQs'].map((item) => (
+        {['Our Work', 'Services', 'Team', 'Internship'].map((item) => (
           <a
             key={item}
             href={`#${item.toLowerCase().replace(' ', '-')}`}
@@ -84,7 +84,7 @@ export default function Navbar() {
         onMouseEnter={e => { e.target.style.transform = 'scale(1.04)'; e.target.style.background = '#c42424'; }}
         onMouseLeave={e => { e.target.style.transform = 'scale(1)'; e.target.style.background = '#e63030'; }}
       >
-        Contact Us
+        Start a Project
       </a>
     </motion.nav>
   );

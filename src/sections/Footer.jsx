@@ -32,7 +32,7 @@ export default function Footer() {
               <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px' }}>NexLevr</span>
             </div>
             <p style={{ fontSize: 14, color: '#777', lineHeight: 1.7, maxWidth: 260 }}>
-              The only media engine built to make you filthy rich. Strategy. Execution. Results.
+              Student-led growth agency. We build, we ship, you grow. Real projects. Real results.
             </p>
           </motion.div>
 
@@ -45,7 +45,7 @@ export default function Footer() {
             <h4 style={{ fontSize: 14, fontWeight: 700, color: '#fff', marginBottom: 20, letterSpacing: '1px', textTransform: 'uppercase' }}>
               Navigate
             </h4>
-            {['About Us', 'Pricing', 'Team', 'FAQs'].map(item => (
+            {['Our Work', 'Services', 'Team', 'Internship', 'FAQs'].map(item => (
               <a
                 key={item}
                 href={`#${item.toLowerCase().replace(' ', '-')}`}
@@ -74,10 +74,10 @@ export default function Footer() {
               Work with us
             </h4>
             <p style={{ color: '#777', fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
-              Ready to scale? Let's talk about your brand.
+              Have a project in mind? Let's build it together.
             </p>
             <motion.a
-              href="mailto:hello@nexlevr.com"
+              href="mailto:janeeshpofficial@gmail.com"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
               style={{
@@ -90,7 +90,7 @@ export default function Footer() {
                 fontWeight: 700,
               }}
             >
-              Book a call →
+              Start a Project →
             </motion.a>
           </motion.div>
         </div>
@@ -105,10 +105,10 @@ export default function Footer() {
           gap: 16,
         }}>
           <p style={{ color: '#555', fontSize: 13 }}>
-            © 2024 NexLevr. All rights reserved.
+            © 2026 NexLevr. All rights reserved.
           </p>
           <p style={{ color: '#555', fontSize: 13 }}>
-            Built for brands that refuse to be ignored.
+            Built by students. Trusted by businesses.
           </p>
         </div>
       </div>

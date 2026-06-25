@@ -3,18 +3,18 @@ import { motion } from 'framer-motion';
 const reasons = [
   {
     num: '01',
-    title: 'All arms. One roof.',
-    desc: 'Social, design, sales, web — when working together, the results compound exponentially. That\'s the NexLevr advantage.',
+    title: 'Real Projects. Real Clients.',
+    desc: 'Every project in our portfolio was built for an actual client — restaurants, gyms, construction firms, e-commerce, and more. No mock-ups.',
   },
   {
     num: '02',
-    title: 'Built Around Goals',
-    desc: 'We don\'t do cookie-cutter. Every engagement starts with understanding what winning looks like for your brand specifically.',
+    title: 'Students Who Ship',
+    desc: 'We don\'t just learn — we execute. NexLevr is run by students who have shipped 75+ projects and are hungry to build more.',
   },
   {
     num: '03',
-    title: 'We Measure Everything',
-    desc: 'Vanity metrics are not our thing. We track what moves revenue and double down on what works.',
+    title: 'Fast Turnaround',
+    desc: 'No corporate lag, no layers of approval. We move fast, communicate clearly, and deliver on time — every time.',
   },
 ];
 
@@ -56,10 +56,10 @@ export default function WhyUs() {
               marginBottom: 24,
               lineHeight: 1.1,
             }}>
-              Everything you need to grow
+              Why clients choose NexLevr
             </h2>
             <p style={{ fontSize: 15, color: '#666', lineHeight: 1.7, marginBottom: 36 }}>
-              From strategy to execution, we offer the full media stack for brands ready to scale. No middlemen, no handoffs, no excuses.
+              A student-led agency that builds, learns, and grows — bringing fresh thinking and real execution to every project we take on.
             </p>
             <motion.a
               href="#contact"
@@ -75,7 +75,7 @@ export default function WhyUs() {
                 fontWeight: 600,
               }}
             >
-              Contact Us →
+              View Our Work →
             </motion.a>
           </motion.div>
 
