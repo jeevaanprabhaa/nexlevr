@@ -25,6 +25,36 @@ const steps = [
 
 const services = ['Web Platforms', 'Brand Identity', 'UI/UX Design', 'Full Stack Apps', 'AI Products'];
 
+const stepContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.16 } },
+};
+
+const stepVariants = {
+  hidden: { opacity: 0, y: 60, scale: 0.88 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], type: 'spring', stiffness: 120, damping: 18 },
+  },
+};
+
+const tagContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const tagVariants = {
+  hidden: { opacity: 0, scale: 0.7, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export default function HowItWorks() {
   return (
     <section style={{
@@ -40,10 +70,10 @@ export default function HowItWorks() {
           marginBottom: 100,
         }}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <span style={{
               fontSize: 13,
@@ -72,10 +102,10 @@ export default function HowItWorks() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             style={{
               background: '#111',
               borderRadius: 24,
@@ -102,24 +132,29 @@ export default function HowItWorks() {
           </motion.div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 20,
-          marginBottom: 60,
-        }}>
+        <motion.div
+          variants={stepContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 20,
+            marginBottom: 60,
+          }}
+        >
           {steps.map((step, i) => (
             <motion.div
               key={step.num}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              variants={stepVariants}
+              whileHover={{ y: -8, transition: { duration: 0.25 } }}
               style={{
                 background: '#fff',
                 borderRadius: 20,
                 padding: '32px 24px',
                 border: '1px solid #ffe0e0',
+                cursor: 'default',
               }}
             >
               <div style={{
@@ -145,18 +180,20 @@ export default function HowItWorks() {
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          variants={tagContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
           style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}
         >
           {services.map((svc) => (
-            <span
+            <motion.span
               key={svc}
+              variants={tagVariants}
+              whileHover={{ scale: 1.06, background: '#ffe8e8', transition: { duration: 0.2 } }}
               style={{
                 background: '#fff',
                 border: '1px solid #ffd0d0',
@@ -165,10 +202,11 @@ export default function HowItWorks() {
                 fontSize: 13,
                 fontWeight: 600,
                 color: '#e63030',
+                cursor: 'default',
               }}
             >
               {svc}
-            </span>
+            </motion.span>
           ))}
         </motion.div>
       </div>

@@ -15,6 +15,25 @@ const team = [
   { name: 'Harsh', role: 'AI & Automation', img: '/FVVY15WOUGC9ISfEfKAeUNGUmo.png' },
 ];
 
+const rows = [team.slice(0, 3), team.slice(3, 6), team.slice(6, 9), team.slice(9, 12)];
+
+const rowVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.14 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 70, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export default function Team() {
   return (
     <section
@@ -24,7 +43,7 @@ export default function Team() {
         padding: '100px 40px',
       }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -34,10 +53,10 @@ export default function Team() {
           gap: 24,
         }}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <span style={{
               fontSize: 13,
@@ -61,10 +80,10 @@ export default function Team() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             style={{ maxWidth: 400 }}
           >
             <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, marginBottom: 20 }}>
@@ -74,7 +93,7 @@ export default function Team() {
               href="https://calendly.com/buzzinga"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ scale: 1.04, backgroundColor: '#f0d800' }}
               whileTap={{ scale: 0.97 }}
               style={{
                 display: 'inline-flex',
@@ -84,6 +103,7 @@ export default function Team() {
                 borderRadius: 50,
                 fontSize: 14,
                 fontWeight: 700,
+                transition: 'background 0.2s',
               }}
             >
               Join the Team →
@@ -91,49 +111,56 @@ export default function Team() {
           </motion.div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))',
-          gap: 20,
-        }}>
-          {team.map((member, i) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {rows.map((row, rowIndex) => (
             <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              whileHover={{ y: -8 }}
-              style={{ cursor: 'pointer' }}
+              key={rowIndex}
+              variants={rowVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.35 }}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: 20,
+              }}
             >
-              <div style={{
-                borderRadius: 16,
-                overflow: 'hidden',
-                aspectRatio: '3/4',
-                background: '#f0ede6',
-                marginBottom: 12,
-              }}>
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'top',
-                    transition: 'transform 0.4s ease',
-                  }}
-                  onMouseEnter={e => e.target.style.transform = 'scale(1.06)'}
-                  onMouseLeave={e => e.target.style.transform = 'scale(1)'}
-                  onError={e => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              </div>
-              <div style={{ fontWeight: 700, fontSize: 14, color: '#111', marginBottom: 4 }}>
-                {member.name}
-              </div>
-              <div style={{ fontSize: 12, color: '#888' }}>{member.role}</div>
+              {row.map((member) => (
+                <motion.div
+                  key={member.name}
+                  variants={cardVariants}
+                  whileHover={{ y: -10, transition: { duration: 0.25 } }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div style={{
+                    borderRadius: 20,
+                    overflow: 'hidden',
+                    aspectRatio: '3/4',
+                    background: '#f0ede6',
+                    marginBottom: 14,
+                    position: 'relative',
+                  }}>
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'top',
+                        transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)',
+                      }}
+                      onMouseEnter={e => e.target.style.transform = 'scale(1.07)'}
+                      onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                      onError={e => { e.target.style.display = 'none'; }}
+                    />
+                  </div>
+                  <div style={{ fontWeight: 700, fontSize: 15, color: '#111', marginBottom: 5 }}>
+                    {member.name}
+                  </div>
+                  <div style={{ fontSize: 13, color: '#888' }}>{member.role}</div>
+                </motion.div>
+              ))}
             </motion.div>
           ))}
         </div>

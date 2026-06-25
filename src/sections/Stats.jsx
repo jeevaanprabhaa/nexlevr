@@ -31,6 +31,21 @@ const stats = [
   { label: 'Student builders on the team', value: 12, suffix: '+' },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const statVariants = {
+  hidden: { opacity: 0, y: 60, scale: 0.88 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export default function Stats() {
   return (
     <section
@@ -42,10 +57,10 @@ export default function Stats() {
     >
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{ marginBottom: 80 }}
         >
           <h2 style={{
@@ -67,23 +82,28 @@ export default function Stats() {
           </p>
         </motion.div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 40,
-        }}>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 40,
+          }}
+        >
           {stats.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              variants={statVariants}
+              whileHover={{ y: -8, transition: { duration: 0.25 } }}
               style={{
                 background: '#fff5f5',
                 borderRadius: 20,
                 padding: '40px 32px',
                 borderLeft: '4px solid #e63030',
+                cursor: 'default',
               }}
             >
               <div style={{
@@ -99,7 +119,7 @@ export default function Stats() {
               <p style={{ fontSize: 15, color: '#777', fontWeight: 500 }}>{stat.label}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

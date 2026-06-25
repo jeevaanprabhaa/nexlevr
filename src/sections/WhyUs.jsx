@@ -18,6 +18,16 @@ const reasons = [
   },
 ];
 
+const reasonVariants = {
+  hidden: { opacity: 0, x: 60, filter: 'blur(4px)' },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.65, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
 export default function WhyUs() {
   return (
     <section style={{
@@ -32,10 +42,10 @@ export default function WhyUs() {
           alignItems: 'start',
         }}>
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -60, filter: 'blur(4px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <span style={{
               fontSize: 13,
@@ -63,8 +73,8 @@ export default function WhyUs() {
             </p>
             <motion.a
               href="#contact"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.05, background: '#c52020' }}
+              whileTap={{ scale: 0.97 }}
               style={{
                 display: 'inline-flex',
                 background: '#e63030',
@@ -73,20 +83,24 @@ export default function WhyUs() {
                 borderRadius: 50,
                 fontSize: 14,
                 fontWeight: 600,
+                transition: 'background 0.2s',
               }}
             >
               View Our Work →
             </motion.a>
           </motion.div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
+          >
             {reasons.map((r, i) => (
               <motion.div
                 key={r.num}
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
+                custom={i}
+                variants={reasonVariants}
                 style={{
                   padding: '36px 0',
                   borderTop: i === 0 ? 'none' : '1px solid #eee',
@@ -117,7 +131,7 @@ export default function WhyUs() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
