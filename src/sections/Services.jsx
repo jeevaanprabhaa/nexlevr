@@ -1,273 +1,235 @@
-import { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const services = [
+const cards = [
   {
-    title: 'Web Platforms',
-    desc: 'Custom web apps, SaaS dashboards, and full-stack platforms built from scratch and shipped fast.',
-    icon: '🌐',
-    color: '#e63030',
-    stat: '40+ built',
+    title: 'web platforms',
+    color: '#1B5E35',
+    textColor: '#f2ede4',
+    rotate: -10,
+    translateY: 50,
+    sticker: '🌐',
+    stickerBg: '#f5e642',
+    features: ['custom web apps', 'saas dashboards', 'full-stack builds', 'fast delivery', 'deployed & live'],
   },
   {
-    title: 'Brand Identity',
-    desc: 'Logo systems, visual language, and brand kits that make your business impossible to ignore.',
-    icon: '🎨',
-    color: '#ff6b35',
-    stat: '25+ brands',
+    title: 'brand identity',
+    color: '#5B5EF4',
+    textColor: '#f2ede4',
+    rotate: -5,
+    translateY: 20,
+    sticker: '🎨',
+    stickerBg: '#C4B5F5',
+    features: ['logo systems', 'color palette', 'typography', 'brand kit pdf', 'visual language'],
   },
   {
-    title: 'UI/UX Design',
-    desc: 'User research, wireframes, and pixel-perfect interfaces designed for conversion and usability.',
-    icon: '✏️',
-    color: '#e63030',
-    stat: '60+ screens',
+    title: 'ui/ux design',
+    color: '#E8602C',
+    textColor: '#f2ede4',
+    rotate: 0,
+    translateY: 0,
+    sticker: '✏️',
+    stickerBg: '#f2ede4',
+    features: ['user research', 'wireframes', 'pixel-perfect ui', 'figma source', 'mobile + desktop'],
   },
   {
-    title: 'AI Products',
-    desc: 'AI-powered tools, automations, and smart product features integrated into your workflow.',
-    icon: '🤖',
-    color: '#ff6b35',
-    stat: '10+ shipped',
+    title: 'ai products',
+    color: '#7B2842',
+    textColor: '#f2ede4',
+    rotate: 5,
+    translateY: 20,
+    sticker: '🤖',
+    stickerBg: '#FFB7C5',
+    features: ['ai-powered tools', 'automation flows', 'smart features', 'api integration', 'workflow ai'],
+  },
+  {
+    title: 'full stack apps',
+    color: '#C4B5F5',
+    textColor: '#0d0d0d',
+    rotate: 10,
+    translateY: 50,
+    sticker: '🚀',
+    stickerBg: '#5B5EF4',
+    features: ['auth & database', 'rest / graphql', 'custom dashboards', 'real-time features', 'scalable infra'],
   },
 ];
 
-function ServiceCard({ svc, i, inView }) {
-  const cardRef = useRef(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
-
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = (e.clientX - cx) / (rect.width / 2);
-    const dy = (e.clientY - cy) / (rect.height / 2);
-    setTilt({ x: dy * -10, y: dx * 10 });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-    setHovered(false);
-  };
-
-  return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 80, rotate: 2 }}
-      animate={inView ? { opacity: 1, y: 0, rotate: 0 } : {}}
-      transition={{ duration: 0.75, delay: i * 0.13, ease: [0.22, 1, 0.36, 1] }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        background: hovered
-          ? 'linear-gradient(135deg, #1f1f1f 0%, #1a1a1a 100%)'
-          : i % 2 === 0 ? '#1a1a1a' : '#1e1e1e',
-        borderRadius: 24,
-        padding: '48px 40px',
-        border: hovered
-          ? `1px solid rgba(230,48,48,0.5)`
-          : i % 2 === 0
-            ? '1px solid rgba(230,48,48,0.2)'
-            : '1px solid rgba(255,255,255,0.06)',
-        cursor: 'pointer',
-        position: 'relative',
-        overflow: 'hidden',
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
-        transition: hovered
-          ? 'transform 0.12s ease, border 0.25s ease, background 0.25s ease, box-shadow 0.25s ease'
-          : 'transform 0.45s cubic-bezier(0.22,1,0.36,1), border 0.25s ease, background 0.25s ease',
-        boxShadow: hovered
-          ? '0 24px 60px rgba(230,48,48,0.18), 0 4px 20px rgba(0,0,0,0.4)'
-          : '0 4px 20px rgba(0,0,0,0.2)',
-      }}
-    >
-      {/* Animated glow top-left */}
-      <div style={{
-        position: 'absolute',
-        top: -60,
-        left: -60,
-        width: 180,
-        height: 180,
-        borderRadius: '50%',
-        background: `radial-gradient(circle, ${svc.color}22 0%, transparent 70%)`,
-        opacity: hovered ? 1 : 0,
-        transition: 'opacity 0.35s ease',
-        pointerEvents: 'none',
-      }} />
-
-      {/* Animated corner accent */}
-      <motion.div
-        animate={{ rotate: hovered ? 360 : 0 }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-        style={{
-          position: 'absolute',
-          top: 20,
-          right: 20,
-          width: 40,
-          height: 40,
-          borderRadius: '50%',
-          border: `1.5px solid ${hovered ? 'rgba(230,48,48,0.4)' : 'rgba(255,255,255,0.06)'}`,
-          transition: 'border 0.25s ease',
-        }}
-      />
-
-      {/* Icon with spring pop */}
-      <motion.div
-        animate={{ scale: hovered ? 1.15 : 1, rotate: hovered ? 8 : 0 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 18 }}
-        style={{ fontSize: 40, marginBottom: 20, display: 'inline-block' }}
-      >
-        {svc.icon}
-      </motion.div>
-
-      {/* Stat badge */}
-      <motion.div
-        animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
-        transition={{ duration: 0.25 }}
-        style={{
-          position: 'absolute',
-          top: 44,
-          right: 40,
-          background: 'rgba(230,48,48,0.15)',
-          border: '1px solid rgba(230,48,48,0.3)',
-          borderRadius: 50,
-          padding: '4px 12px',
-          fontSize: 12,
-          fontWeight: 700,
-          color: '#e63030',
-          letterSpacing: '0.5px',
-        }}
-      >
-        {svc.stat}
-      </motion.div>
-
-      <h3 style={{
-        fontSize: 32,
-        fontWeight: 800,
-        color: '#fff',
-        letterSpacing: '-1px',
-        marginBottom: 16,
-      }}>
-        {svc.title}
-      </h3>
-
-      <p style={{ fontSize: 15, color: '#888', lineHeight: 1.7, marginBottom: 28 }}>
-        {svc.desc}
-      </p>
-
-      <motion.a
-        href="#pricing"
-        animate={{ x: hovered ? 6 : 0, color: hovered ? '#ff5555' : '#e63030' }}
-        transition={{ duration: 0.2 }}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 8,
-          fontWeight: 700,
-          fontSize: 14,
-        }}
-      >
-        Start a {svc.title} project
-        <motion.span
-          animate={{ x: hovered ? 4 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          →
-        </motion.span>
-      </motion.a>
-    </motion.div>
-  );
-}
-
 export default function Services() {
-  const [inView, setInView] = useState(false);
-  const sectionRef = useRef(null);
+  const [activeCard, setActiveCard] = useState(2);
 
   return (
     <section
       id="services"
-      ref={sectionRef}
-      style={{
-        background: '#111',
-        padding: '120px 40px',
-        overflow: 'hidden',
-      }}
+      style={{ background: '#f2ede4', padding: '120px 60px', overflow: 'hidden' }}
     >
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+
+        {/* Headline */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          onViewportEnter={() => setInView(true)}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: 20 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ marginBottom: 80 }}
         >
-          <span style={{
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: '#e63030',
+          <h2 style={{
+            fontSize: 'clamp(44px, 7vw, 96px)',
+            fontWeight: 900,
+            lineHeight: 0.92,
+            letterSpacing: '-4px',
+            color: '#0d0d0d',
           }}>
-            Our Services
-          </span>
+            call us if you{' '}
+            <em style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontStyle: 'italic',
+              fontWeight: 400,
+              letterSpacing: '-2px',
+            }}>
+              need:
+            </em>
+          </h2>
         </motion.div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 64, flexWrap: 'wrap', gap: 24 }}>
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.65, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: 'clamp(32px, 5vw, 56px)',
-              fontWeight: 900,
-              letterSpacing: '-1.5px',
-              color: '#fff',
-              maxWidth: 560,
-              margin: 0,
-            }}
-          >
-            What we actually build for you
-          </motion.h2>
-
-          <motion.a
-            href="#pricing"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            whileHover={{ scale: 1.04, background: 'rgba(230,48,48,0.12)' }}
-            whileTap={{ scale: 0.97 }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              border: '1.5px solid rgba(230,48,48,0.4)',
-              color: '#e63030',
-              padding: '12px 24px',
-              borderRadius: 50,
-              fontSize: 14,
-              fontWeight: 600,
-            }}
-          >
-            See pricing →
-          </motion.a>
-        </div>
-
+        {/* Fanned cards */}
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 20,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            gap: 0,
+            paddingBottom: 60,
+            paddingTop: 20,
+            position: 'relative',
           }}
         >
-          {services.map((svc, i) => (
-            <ServiceCard key={svc.title} svc={svc} i={i} inView={inView} />
+          {cards.map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              onClick={() => setActiveCard(activeCard === i ? null : i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveCard(activeCard === i ? null : i); } }}
+              role="button"
+              tabIndex={0}
+              aria-expanded={activeCard === i}
+              aria-label={`${card.title} service card`}
+              style={{
+                width: 200,
+                minHeight: 460,
+                background: card.color,
+                borderRadius: '20px 20px 12px 12px',
+                padding: '24px 20px 28px',
+                transform: `rotate(${card.rotate}deg) translateY(${activeCard === i ? 0 : card.translateY}px)`,
+                marginLeft: i > 0 ? -24 : 0,
+                zIndex: activeCard === i ? 10 : 5 - Math.abs(i - 2),
+                position: 'relative',
+                cursor: 'pointer',
+                transition: 'transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease, z-index 0s',
+                boxShadow: activeCard === i
+                  ? '0 32px 80px rgba(0,0,0,0.3)'
+                  : '0 8px 24px rgba(0,0,0,0.15)',
+                border: '2px solid rgba(0,0,0,0.12)',
+                flexShrink: 0,
+              }}
+            >
+              {/* Sticker */}
+              <div style={{
+                position: 'absolute',
+                top: -18,
+                right: 16,
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                background: card.stickerBg,
+                border: '2.5px solid #0d0d0d',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                boxShadow: '1px 2px 0 #0d0d0d',
+                transform: `rotate(${-card.rotate * 1.5}deg)`,
+              }}>
+                {card.sticker}
+              </div>
+
+              {/* Title */}
+              <h3 style={{
+                fontSize: 26,
+                fontWeight: 900,
+                color: card.textColor,
+                letterSpacing: '-0.8px',
+                lineHeight: 1.1,
+                marginBottom: 14,
+                marginTop: 8,
+              }}>
+                {card.title}
+              </h3>
+
+              {/* Divider */}
+              <div style={{
+                height: 1.5,
+                background: `${card.textColor}33`,
+                marginBottom: 18,
+              }} />
+
+              {/* Features */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {card.features.map((feat) => (
+                  <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ color: card.textColor, opacity: 0.7, fontSize: 13 }}>✦</span>
+                    <span style={{
+                      fontSize: 13,
+                      color: card.textColor,
+                      opacity: 0.85,
+                      fontWeight: 500,
+                      lineHeight: 1.4,
+                    }}>
+                      {feat}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <AnimatePresence>
+                {activeCard === i && (
+                  <motion.a
+                    href="#pricing"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.25 }}
+                    style={{
+                      display: 'block',
+                      marginTop: 24,
+                      textAlign: 'center',
+                      padding: '10px',
+                      borderRadius: 50,
+                      background: card.textColor,
+                      color: card.color,
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  >
+                    get started →
+                  </motion.a>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </div>
+
+        <p style={{
+          textAlign: 'center',
+          fontSize: 13,
+          color: 'rgba(13,13,13,0.4)',
+          marginTop: 8,
+        }}>
+          tap a card to explore ↑
+        </p>
       </div>
     </section>
   );

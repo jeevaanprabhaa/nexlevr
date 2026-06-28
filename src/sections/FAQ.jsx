@@ -2,93 +2,67 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const faqs = [
-  {
-    q: 'What kind of projects does NexLevr take on?',
-    a: 'We\'ve shipped 75+ projects across restaurants, gyms, construction, interior design, e-commerce, education, boxing, CRM systems, and more. If you need it built, we\'ve probably built something like it already.',
-  },
-  {
-    q: 'How long does a typical project take?',
-    a: 'Landing pages are done in 3–5 days. Full web apps take 2–6 weeks depending on scope. Brand identity projects typically take 1–2 weeks. We always give you a clear timeline before we start.',
-  },
-  {
-    q: 'Are you actually students? Is the quality professional?',
-    a: 'Yes, we\'re a student-led team — and that\'s our advantage. We move faster, charge less, and bring fresh energy. Our portfolio speaks for itself: 75+ real projects shipped for real clients. Quality is non-negotiable.',
-  },
-  {
-    q: 'Do you work with clients outside India?',
-    a: 'Yes. While we\'re based in India, we work with clients globally. We communicate async and sync across time zones without issues.',
-  },
-  {
-    q: 'How do I start a project with NexLevr?',
-    a: 'Hit "Start a Project", tell us what you need, and we\'ll set up a free discovery call. We scope the project, agree on timeline and pricing, and get to work. Simple.',
-  },
-  {
-    q: 'Do you offer internships?',
-    a: 'Yes! NexLevr runs a hands-on internship program. You\'ll work on real client projects, learn by doing, and build a portfolio that actually matters. Scroll down to the internship section or reach out directly.',
-  },
+  { q: 'what kind of projects does nexlevr take on?', a: 'we\'ve shipped 75+ projects across restaurants, gyms, construction, interior design, e-commerce, education, boxing, crm systems, and more. if you need it built, we\'ve probably built something like it already.' },
+  { q: 'how long does a typical project take?', a: 'landing pages are done in 3–5 days. full web apps take 2–6 weeks depending on scope. brand identity projects typically take 1–2 weeks. we always give you a clear timeline before we start.' },
+  { q: 'are you actually students? is the quality professional?', a: 'yes, we\'re a student-led team — and that\'s our advantage. we move faster, charge less, and bring fresh energy. our portfolio speaks for itself: 75+ real projects shipped for real clients. quality is non-negotiable.' },
+  { q: 'do you work with clients outside india?', a: 'yes. while we\'re based in india, we work with clients globally. we communicate async and sync across time zones without issues.' },
+  { q: 'how do i start a project with nexlevr?', a: 'hit "start a project", tell us what you need, and we\'ll set up a free discovery call. we scope the project, agree on timeline and pricing, and get to work. simple.' },
+  { q: 'do you offer internships?', a: 'yes! nexlevr runs a hands-on internship program. you\'ll work on real client projects, learn by doing, and build a portfolio that actually matters.' },
 ];
 
 export default function FAQ() {
   const [open, setOpen] = useState(null);
 
   return (
-    <section
-      id="faqs"
-      style={{
-        background: '#fff5f5',
-        padding: '100px 40px',
-      }}
-    >
-      <div style={{ maxWidth: 800, margin: '0 auto' }}>
+    <section id="faqs" style={{ background: '#f2ede4', padding: '120px 60px', borderTop: '2px solid rgba(13,13,13,0.08)' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 64 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ marginBottom: 72 }}
         >
-          <span style={{
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: '#e63030',
-            display: 'block',
-            marginBottom: 16,
-          }}>
-            FAQ
-          </span>
           <h2 style={{
-            fontSize: 'clamp(32px, 4vw, 48px)',
+            fontSize: 'clamp(44px, 7vw, 80px)',
             fontWeight: 900,
-            letterSpacing: '-1.5px',
-            color: '#111',
+            lineHeight: 0.92,
+            letterSpacing: '-4px',
+            color: '#0d0d0d',
           }}>
-            Everything you want to know
+            got questions?{' '}
+            <em style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontStyle: 'italic',
+              fontWeight: 400,
+            }}>
+              we do too.
+            </em>
           </h2>
         </motion.div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           {faqs.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              transition={{ duration: 0.45, delay: i * 0.07 }}
               style={{
-                background: '#fff',
-                borderRadius: 16,
+                borderTop: '2px solid rgba(13,13,13,0.1)',
                 overflow: 'hidden',
-                border: open === i ? '1px solid #e63030' : '1px solid #ffe0e0',
-                transition: 'border-color 0.2s',
               }}
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+                aria-controls={`faq-panel-${i}`}
+                id={`faq-btn-${i}`}
                 style={{
                   width: '100%',
-                  padding: '24px 28px',
+                  padding: '28px 0',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -96,46 +70,60 @@ export default function FAQ() {
                   border: 'none',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  gap: 16,
+                  gap: 20,
                 }}
               >
                 <span style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  color: '#111',
-                  letterSpacing: '-0.3px',
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: '#0d0d0d',
+                  letterSpacing: '-0.4px',
+                  lineHeight: 1.3,
                 }}>
                   {faq.q}
                 </span>
-                <motion.span
+                <motion.div
                   animate={{ rotate: open === i ? 45 : 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                   style={{
-                    fontSize: 24,
-                    color: '#e63030',
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%',
+                    background: open === i ? '#0d0d0d' : 'transparent',
+                    border: '2px solid #0d0d0d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     flexShrink: 0,
-                    lineHeight: 1,
+                    color: open === i ? '#f2ede4' : '#0d0d0d',
+                    fontSize: 20,
                     fontWeight: 300,
+                    lineHeight: 1,
+                    transition: 'background 0.2s, color 0.2s',
                   }}
                 >
                   +
-                </motion.span>
+                </motion.div>
               </button>
 
               <AnimatePresence>
                 {open === i && (
                   <motion.div
+                    id={`faq-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-btn-${i}`}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     style={{ overflow: 'hidden' }}
                   >
                     <p style={{
-                      padding: '0 28px 24px',
+                      paddingBottom: 28,
                       fontSize: 15,
-                      color: '#666',
-                      lineHeight: 1.7,
+                      color: 'rgba(13,13,13,0.6)',
+                      lineHeight: 1.75,
+                      maxWidth: 720,
                     }}>
                       {faq.a}
                     </p>
@@ -144,6 +132,9 @@ export default function FAQ() {
               </AnimatePresence>
             </motion.div>
           ))}
+
+          {/* last border */}
+          <div style={{ borderTop: '2px solid rgba(13,13,13,0.1)' }} />
         </div>
       </div>
     </section>

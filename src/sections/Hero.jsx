@@ -11,9 +11,36 @@ const VIDEOS = [
   `${CDN}/NuVnwXG8mkMplUpYnt1k0ANTa2Y.mp4`,
   `${CDN}/u5EiP1O7LeCR5CU5uChapC0XeWY.mp4`,
 ];
-
 const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
 const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
+
+function Sticker({ emoji, bg, angle, top, left, right, bottom, size = 60 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5, rotate: angle - 10 }}
+      animate={{ opacity: 1, scale: 1, rotate: angle }}
+      transition={{ duration: 0.6, delay: 1.2, type: 'spring', bounce: 0.5 }}
+      style={{
+        position: 'absolute',
+        top, left, right, bottom,
+        width: size, height: size,
+        borderRadius: '50%',
+        background: bg,
+        border: '2.5px solid rgba(255,255,255,0.3)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: size * 0.42,
+        transform: `rotate(${angle}deg)`,
+        pointerEvents: 'none',
+        zIndex: 2,
+        userSelect: 'none',
+      }}
+    >
+      {emoji}
+    </motion.div>
+  );
+}
 
 export default function Hero() {
   const ref = useRef(null);
@@ -21,22 +48,17 @@ export default function Hero() {
   const rafRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
 
-  // Scroll-based parallax on the text block
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%']);
 
-  // Mouse parallax on video strip — RAF-based, no React state re-renders
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none)').matches) return;
 
     const onMove = (e) => {
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      mouseRef.current = {
-        x: (e.clientX - cx) / cx,
-        y: (e.clientY - cy) / cy,
-      };
+      mouseRef.current = { x: (e.clientX - cx) / cx, y: (e.clientY - cy) / cy };
     };
     window.addEventListener('mousemove', onMove, { passive: true });
 
@@ -44,8 +66,7 @@ export default function Hero() {
       if (stripRef.current) {
         const tx = mouseRef.current.x * -10;
         const ty = mouseRef.current.y * -5;
-        stripRef.current.style.transform =
-          `rotate(-3deg) translateX(${tx}px) translateY(${ty}px)`;
+        stripRef.current.style.transform = `rotate(-3deg) translateX(${tx}px) translateY(${ty}px)`;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -62,139 +83,142 @@ export default function Hero() {
       ref={ref}
       style={{
         minHeight: '100vh',
-        background: '#fdf6f6',
-        backgroundImage: `
-          linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: '48px 48px',
+        background: '#0d0d0d',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '140px 40px 60px',
+        padding: '140px 60px 0',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Headline with scroll parallax */}
-      <motion.div style={{ y: textY, maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        {/* Word-by-word stagger */}
+      {/* Stickers */}
+      <Sticker emoji="😊" bg="#7B8FFF" angle={-12} top="22%" right="12%" size={72} />
+      <Sticker emoji="✨" bg="#f5e642" angle={15} top="18%" right="22%" size={52} />
+      <Sticker emoji="🫶" bg="#C4B5F5" angle={-8} top="55%" right="8%" size={64} />
+      <Sticker emoji="📸" bg="#f2ede4" angle={20} top="30%" left="5%" size={56} />
+
+      {/* Headline */}
+      <motion.div style={{ y: textY, position: 'relative', zIndex: 1 }}>
         <div style={{
-          fontSize: 'clamp(52px, 9vw, 120px)',
+          fontSize: 'clamp(60px, 10vw, 130px)',
           fontWeight: 900,
-          lineHeight: 0.92,
-          letterSpacing: '-4px',
-          color: '#111',
+          lineHeight: 0.9,
+          letterSpacing: '-5px',
+          color: '#f2ede4',
           margin: 0,
-          marginBottom: 36,
+          marginBottom: 40,
         }}>
-          {['Build.', 'Ship.'].map((word, wi) => (
+          {['we build.', 'we ship.'].map((line, i) => (
             <motion.div
-              key={word}
-              initial={{ opacity: 0, x: -60 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: wi * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              key={line}
+              initial={{ opacity: 0, y: 80 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.1 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
             >
-              We {word}
+              {line}
             </motion.div>
           ))}
           <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontStyle: 'italic',
+              fontWeight: 400,
+              color: '#e63030',
+            }}
           >
-            <em style={{ color: '#e63030', fontStyle: 'italic', fontWeight: 900 }}>
-              You Grow.
-            </em>
+            you grow.
           </motion.div>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', marginBottom: 16 }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}
         >
           <p style={{
-            fontSize: 17,
-            color: '#555',
+            fontSize: 16,
+            color: 'rgba(242,237,228,0.55)',
             lineHeight: 1.65,
-            maxWidth: 480,
+            maxWidth: 420,
             margin: 0,
           }}>
-            NexLevr is a student-led growth agency — shipping real web platforms, brand systems, and full-stack products for businesses that refuse to stay average.
+            a student-led agency shipping real web platforms, brand systems, and full-stack products for businesses that refuse to stay average.
           </p>
 
           <motion.a
             href="#pricing"
-            whileHover={{ scale: 1.05, background: '#c42020' }}
+            whileHover={{ scale: 1.05, background: '#f2ede4', color: '#0d0d0d' }}
             whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            transition={{ duration: 0.2 }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 10,
               background: '#e63030',
               color: '#fff',
-              padding: '18px 36px',
+              padding: '16px 32px',
               borderRadius: 50,
               fontSize: 15,
               fontWeight: 700,
               letterSpacing: '-0.2px',
-              boxShadow: '0 8px 32px rgba(230,48,48,0.35)',
+              border: '2px solid #e63030',
             }}
           >
-            Start a Project
-            <span style={{ fontSize: 20, lineHeight: 1 }}>→</span>
+            start a project →
           </motion.a>
 
           <motion.a
             href="#services"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={{ opacity: 1 }}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              color: '#111',
-              padding: '18px 32px',
-              borderRadius: 50,
-              fontSize: 15,
-              fontWeight: 600,
-              border: '1.5px solid rgba(0,0,0,0.15)',
+              fontSize: 14,
+              fontWeight: 500,
+              color: 'rgba(242,237,228,0.45)',
+              borderBottom: '1px solid rgba(242,237,228,0.25)',
+              paddingBottom: 2,
+              transition: 'color 0.2s',
             }}
           >
-            View Services
+            view services
           </motion.a>
         </motion.div>
 
-        {/* Trust badges */}
+        {/* Trust line */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          style={{ display: 'flex', gap: 24, marginTop: 24, flexWrap: 'wrap' }}
+          transition={{ delay: 0.9 }}
+          style={{ display: 'flex', gap: 32, marginTop: 40, flexWrap: 'wrap' }}
         >
-          {['75+ Projects Shipped', '16+ Brands Built', 'Student-Led Team'].map((badge) => (
-            <div key={badge} style={{
-              display: 'flex', alignItems: 'center', gap: 8,
-              fontSize: 13, color: '#888', fontWeight: 500,
+          {['75+ projects shipped', '16+ brands built', 'student-led team'].map((b) => (
+            <span key={b} style={{
+              fontSize: 12,
+              color: 'rgba(242,237,228,0.35)',
+              fontWeight: 500,
+              letterSpacing: '0.5px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
             }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#e63030' }} />
-              {badge}
-            </div>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#e63030', display: 'inline-block' }} />
+              {b}
+            </span>
           ))}
         </motion.div>
       </motion.div>
 
-      {/* Video strip — slightly bent (-3deg), slightly left, mouse parallax via ref */}
+      {/* ── Tilted infinite video strip (unchanged logic) ── */}
       <motion.div
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.5 }}
-        style={{ width: '110%', marginTop: 72, position: 'relative', left: '-5%' }}
+        style={{ width: '110%', marginTop: 80, position: 'relative', left: '-5%' }}
       >
-        {/* Inner div receives the RAF-driven transform */}
         <div
           ref={stripRef}
           style={{
@@ -221,10 +245,9 @@ export default function Hero() {
                     borderRadius: 18,
                     overflow: 'hidden',
                     flexShrink: 0,
-                    background: '#ddd',
-                    boxShadow: '0 12px 40px rgba(0,0,0,0.14)',
+                    background: '#222',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
                     cursor: 'pointer',
-                    position: 'relative',
                   }}
                 >
                   <video

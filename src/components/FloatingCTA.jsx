@@ -21,8 +21,8 @@ export default function FloatingCTA() {
           transition={{ type: 'spring', stiffness: 380, damping: 28 }}
           style={{
             position: 'fixed',
-            bottom: 32,
-            right: 32,
+            bottom: 28,
+            right: 28,
             zIndex: 9000,
             display: 'flex',
             flexDirection: 'column',
@@ -38,27 +38,27 @@ export default function FloatingCTA() {
                 exit={{ opacity: 0, y: 12, scale: 0.92 }}
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  background: '#fff',
+                  background: '#f2ede4',
                   borderRadius: 20,
                   padding: '24px',
                   width: 280,
-                  boxShadow: '0 24px 80px rgba(0,0,0,0.18)',
-                  border: '1px solid rgba(0,0,0,0.06)',
+                  boxShadow: '4px 4px 0 #0d0d0d',
+                  border: '2px solid #0d0d0d',
                 }}
               >
                 <p style={{
-                  fontSize: 15,
-                  fontWeight: 800,
-                  color: '#111',
-                  letterSpacing: '-0.4px',
+                  fontSize: 16,
+                  fontWeight: 900,
+                  color: '#0d0d0d',
+                  letterSpacing: '-0.5px',
                   marginBottom: 6,
                 }}>
-                  Ready to build something?
+                  ready to build something?
                 </p>
-                <p style={{ fontSize: 13, color: '#777', lineHeight: 1.6, marginBottom: 18 }}>
-                  Drop us a message and we'll get back within 24 hours.
+                <p style={{ fontSize: 13, color: 'rgba(13,13,13,0.55)', lineHeight: 1.6, marginBottom: 18 }}>
+                  we reply within 24 hours. no spam, no pressure.
                 </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <motion.a
                     href="mailto:janeeshpofficial@gmail.com"
                     whileHover={{ scale: 1.03 }}
@@ -66,15 +66,16 @@ export default function FloatingCTA() {
                     style={{
                       display: 'block',
                       textAlign: 'center',
-                      background: '#e63030',
-                      color: '#fff',
+                      background: '#0d0d0d',
+                      color: '#f2ede4',
                       padding: '12px',
-                      borderRadius: 12,
+                      borderRadius: 50,
                       fontSize: 13,
                       fontWeight: 700,
+                      border: '2px solid #0d0d0d',
                     }}
                   >
-                    Email Us →
+                    email us →
                   </motion.a>
                   <motion.a
                     href="#pricing"
@@ -84,15 +85,16 @@ export default function FloatingCTA() {
                     style={{
                       display: 'block',
                       textAlign: 'center',
-                      background: '#f5f5f5',
-                      color: '#111',
+                      background: 'transparent',
+                      color: '#0d0d0d',
                       padding: '12px',
-                      borderRadius: 12,
+                      borderRadius: 50,
                       fontSize: 13,
                       fontWeight: 600,
+                      border: '2px solid rgba(13,13,13,0.2)',
                     }}
                   >
-                    See Pricing
+                    see pricing
                   </motion.a>
                 </div>
               </motion.div>
@@ -105,18 +107,18 @@ export default function FloatingCTA() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             style={{
-              width: 60,
-              height: 60,
+              width: 56,
+              height: 56,
               borderRadius: '50%',
-              background: '#e63030',
-              border: 'none',
+              background: '#0d0d0d',
+              border: '2px solid #0d0d0d',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 32px rgba(230,48,48,0.45)',
-              color: '#fff',
-              fontSize: open ? 22 : 20,
+              boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+              color: '#f2ede4',
+              fontSize: 18,
             }}
           >
             <motion.span
@@ -128,19 +130,16 @@ export default function FloatingCTA() {
             </motion.span>
           </motion.button>
 
-          {/* Pulse ring */}
           {!open && (
             <motion.div
-              animate={{ scale: [1, 1.6], opacity: [0.5, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+              animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
               style={{
                 position: 'absolute',
-                bottom: 0,
-                right: 0,
-                width: 60,
-                height: 60,
+                bottom: 0, right: 0,
+                width: 56, height: 56,
                 borderRadius: '50%',
-                border: '2px solid #e63030',
+                border: '2px solid #0d0d0d',
                 pointerEvents: 'none',
               }}
             />

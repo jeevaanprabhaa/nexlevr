@@ -3,16 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PageLoader() {
   const [visible, setVisible] = useState(true);
-  const [phase, setPhase] = useState(0); // 0=building bar, 1=text reveal, 2=exit
+  const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 600);
-    const t2 = setTimeout(() => setPhase(2), 1800);
-    const t3 = setTimeout(() => setVisible(false), 2500);
+    const t1 = setTimeout(() => setPhase(1), 400);
+    const t2 = setTimeout(() => setPhase(2), 1700);
+    const t3 = setTimeout(() => setVisible(false), 2300);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
 
-  const letters = 'NexLevr'.split('');
+  const letters = 'nexlevr'.split('');
 
   return (
     <AnimatePresence>
@@ -20,36 +20,36 @@ export default function PageLoader() {
         <motion.div
           key="loader"
           initial={{ opacity: 1 }}
-          exit={{ y: '-100%', transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
+          exit={{ y: '-100%', transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } }}
           style={{
             position: 'fixed',
             inset: 0,
-            background: '#111',
+            background: '#f2ede4',
             zIndex: 99999,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 32,
+            gap: 24,
           }}
         >
-          {/* Logo letters */}
-          <div style={{ display: 'flex', gap: 2 }}>
+          {/* Letters */}
+          <div style={{ display: 'flex', gap: 2, alignItems: 'baseline' }}>
             {letters.map((l, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 60 }}
                 animate={phase >= 1 ? { opacity: 1, y: 0 } : {}}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.06,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+                transition={{ duration: 0.55, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  fontSize: 'clamp(48px, 8vw, 96px)',
-                  fontWeight: 900,
-                  letterSpacing: '-3px',
-                  color: i >= 3 ? '#e63030' : '#fff',
+                  fontSize: 'clamp(52px, 10vw, 108px)',
+                  fontWeight: i < 3 ? 900 : 400,
+                  fontFamily: i >= 3
+                    ? "'DM Serif Display', Georgia, serif"
+                    : "'Inter', system-ui, sans-serif",
+                  fontStyle: i >= 3 ? 'italic' : 'normal',
+                  letterSpacing: '-4px',
+                  color: i >= 3 ? '#e63030' : '#0d0d0d',
                   lineHeight: 1,
                 }}
               >
@@ -62,16 +62,16 @@ export default function PageLoader() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={phase >= 1 ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.4, delay: 0.65 }}
             style={{
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: 600,
               letterSpacing: '4px',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(13,13,13,0.35)',
             }}
           >
-            We Build. We Ship. You Grow.
+            we build. we ship. you grow.
           </motion.p>
 
           {/* Progress bar */}
@@ -81,19 +81,13 @@ export default function PageLoader() {
             left: 0,
             right: 0,
             height: 3,
-            background: 'rgba(255,255,255,0.1)',
+            background: 'rgba(13,13,13,0.08)',
           }}>
             <motion.div
               initial={{ width: '0%' }}
-              animate={{ width: phase >= 2 ? '100%' : '70%' }}
-              transition={{
-                duration: phase >= 2 ? 0.4 : 1,
-                ease: phase >= 2 ? 'easeIn' : 'easeOut',
-              }}
-              style={{
-                height: '100%',
-                background: '#e63030',
-              }}
+              animate={{ width: phase >= 2 ? '100%' : '65%' }}
+              transition={{ duration: phase >= 2 ? 0.4 : 1.2, ease: phase >= 2 ? 'easeIn' : 'easeOut' }}
+              style={{ height: '100%', background: '#e63030' }}
             />
           </div>
         </motion.div>

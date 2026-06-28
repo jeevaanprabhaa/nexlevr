@@ -1,166 +1,141 @@
 import { motion } from 'framer-motion';
 
 const team = [
-  { name: 'Janeesh Pemmasani', role: 'Founder & Product Lead', img: '/iXFRkht7LqgNyHSfRn6jJZcBc.png' },
-  { name: 'Maandar Devaneson', role: 'Operations & Quality', img: '/oqyqVRxNZSuMkf7oxhvVMym05o.png' },
-  { name: 'Raghav Tiwari', role: 'Frontend Developer', img: '/QNpgGWq5wUYr3AnWIyPOI7B0Wxs.png' },
-  { name: 'Yuvam Shah', role: 'UI/UX Designer', img: '/AycIlVaE3kLT5njrZT36T00A.png' },
-  { name: 'Dheer Mehta', role: 'Strategy & Research', img: '/lfe8jbDKwE4YHNrkDO6yynPdgs.png' },
-  { name: 'Bhushan Chavan', role: 'Brand Designer', img: '/kabXk0ldzBWHLOiQNXEVyfIlvU.png' },
-  { name: 'Raj Mehta', role: 'Full Stack Developer', img: '/team/raj.png' },
-  { name: 'Shlok Parikh', role: 'Backend Developer', img: '/GZ3GcOsYBatBwVpcm2VUiymi6Zs.png' },
-  { name: 'Rajvansh Minglani', role: 'Growth & Outreach', img: '/9zilj3QVFrNjXA7UeeFgHXgrQ.png' },
-  { name: 'Sagar Saxena', role: 'Mobile Developer', img: '/team/sagar.png' },
-  { name: 'Jeet Mane', role: 'Graphic Designer', img: '/bojY1eSnAQ9HiE85STCwfudg0.png' },
-  { name: 'Harsh', role: 'AI & Automation', img: '/FVVY15WOUGC9ISfEfKAeUNGUmo.png' },
+  { name: 'Janeesh Pemmasani', role: 'founder & product lead', img: '/iXFRkht7LqgNyHSfRn6jJZcBc.png' },
+  { name: 'Maandar Devaneson', role: 'operations & quality', img: '/oqyqVRxNZSuMkf7oxhvVMym05o.png' },
+  { name: 'Raghav Tiwari', role: 'frontend developer', img: '/QNpgGWq5wUYr3AnWIyPOI7B0Wxs.png' },
+  { name: 'Yuvam Shah', role: 'ui/ux designer', img: '/AycIlVaE3kLT5njrZT36T00A.png' },
+  { name: 'Dheer Mehta', role: 'strategy & research', img: '/lfe8jbDKwE4YHNrkDO6yynPdgs.png' },
+  { name: 'Bhushan Chavan', role: 'brand designer', img: '/kabXk0ldzBWHLOiQNXEVyfIlvU.png' },
+  { name: 'Raj Mehta', role: 'full stack developer', img: '/team/raj.png' },
+  { name: 'Shlok Parikh', role: 'backend developer', img: '/GZ3GcOsYBatBwVpcm2VUiymi6Zs.png' },
+  { name: 'Rajvansh Minglani', role: 'growth & outreach', img: '/9zilj3QVFrNjXA7UeeFgHXgrQ.png' },
+  { name: 'Sagar Saxena', role: 'mobile developer', img: '/team/sagar.png' },
+  { name: 'Jeet Mane', role: 'graphic designer', img: '/bojY1eSnAQ9HiE85STCwfudg0.png' },
+  { name: 'Harsh', role: 'ai & automation', img: '/FVVY15WOUGC9ISfEfKAeUNGUmo.png' },
 ];
 
-const rows = [team.slice(0, 3), team.slice(3, 6), team.slice(6, 9), team.slice(9, 12)];
-
-const rowVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.14 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 70, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
-  },
-};
+const CARD_COLORS = [
+  '#C4B5F5', '#f5e642', '#5B5EF4', '#E8602C',
+  '#C4B5F5', '#1B5E35', '#f5e642', '#5B5EF4',
+  '#7B2842', '#E8602C', '#C4B5F5', '#f5e642',
+];
 
 export default function Team() {
   return (
-    <section
-      id="team"
-      style={{
-        background: '#fff',
-        padding: '100px 40px',
-      }}
-    >
+    <section id="team" style={{ background: '#f2ede4', padding: '120px 60px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+        {/* Header */}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          marginBottom: 64,
+          marginBottom: 72,
           flexWrap: 'wrap',
           gap: 24,
         }}>
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span style={{
-              fontSize: 13,
-              fontWeight: 600,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: '#999',
-              display: 'block',
-              marginBottom: 12,
-            }}>
-              Our Team
-            </span>
             <h2 style={{
-              fontSize: 'clamp(32px, 4vw, 48px)',
+              fontSize: 'clamp(44px, 7vw, 96px)',
               fontWeight: 900,
-              letterSpacing: '-1.5px',
-              color: '#111',
+              lineHeight: 0.92,
+              letterSpacing: '-4px',
+              color: '#0d0d0d',
             }}>
-              The builders behind the work
+              the team{' '}
+              <em style={{
+                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontStyle: 'italic',
+                fontWeight: 400,
+              }}>
+                behind it.
+              </em>
             </h2>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            style={{ maxWidth: 400 }}
+            transition={{ delay: 0.2 }}
+            style={{ maxWidth: 340 }}
           >
-            <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, marginBottom: 20 }}>
-              A team of student builders, designers, and strategists — learning in public, shipping in production, and growing with every project.
+            <p style={{ fontSize: 14, color: 'rgba(13,13,13,0.55)', lineHeight: 1.7, marginBottom: 20 }}>
+              student builders, designers, and strategists — learning in public, shipping in production.
             </p>
             <motion.a
               href="mailto:janeeshpofficial@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.04, backgroundColor: '#f0d800' }}
+              whileHover={{ scale: 1.04, background: '#0d0d0d', color: '#f2ede4' }}
               whileTap={{ scale: 0.97 }}
               style={{
                 display: 'inline-flex',
                 background: '#f5e642',
-                color: '#111',
+                color: '#0d0d0d',
                 padding: '12px 24px',
                 borderRadius: 50,
-                fontSize: 14,
-                fontWeight: 700,
-                transition: 'background 0.2s',
+                fontSize: 13,
+                fontWeight: 800,
+                border: '2px solid #0d0d0d',
+                transition: 'all 0.2s',
               }}
             >
-              Join the Team →
+              join the team →
             </motion.a>
           </motion.div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {rows.map((row, rowIndex) => (
+        {/* Team grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 12,
+        }}>
+          {team.map((member, i) => (
             <motion.div
-              key={rowIndex}
-              variants={rowVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.35 }}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: 20,
-              }}
+              key={member.name}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -8, transition: { duration: 0.25 } }}
+              style={{ cursor: 'default' }}
             >
-              {row.map((member) => (
-                <motion.div
-                  key={member.name}
-                  variants={cardVariants}
-                  whileHover={{ y: -10, transition: { duration: 0.25 } }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div style={{
-                    borderRadius: 20,
-                    overflow: 'hidden',
-                    aspectRatio: '3/4',
-                    background: '#f0ede6',
-                    marginBottom: 14,
-                    position: 'relative',
-                  }}>
-                    <img
-                      src={member.img}
-                      alt={member.name}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: 'top',
-                        transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)',
-                      }}
-                      onMouseEnter={e => e.target.style.transform = 'scale(1.07)'}
-                      onMouseLeave={e => e.target.style.transform = 'scale(1)'}
-                      onError={e => { e.target.style.display = 'none'; }}
-                    />
-                  </div>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: '#111', marginBottom: 5 }}>
-                    {member.name}
-                  </div>
-                  <div style={{ fontSize: 13, color: '#888' }}>{member.role}</div>
-                </motion.div>
-              ))}
+              <div style={{
+                borderRadius: 18,
+                overflow: 'hidden',
+                aspectRatio: '3/4',
+                background: CARD_COLORS[i],
+                marginBottom: 12,
+                position: 'relative',
+                border: '2px solid rgba(0,0,0,0.08)',
+              }}>
+                <img
+                  src={member.img}
+                  alt={member.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'top',
+                    transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)',
+                  }}
+                  onMouseEnter={e => e.target.style.transform = 'scale(1.07)'}
+                  onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                  onError={e => { e.target.style.opacity = '0'; }}
+                />
+              </div>
+              <div style={{ fontWeight: 800, fontSize: 14, color: '#0d0d0d', marginBottom: 3, letterSpacing: '-0.3px' }}>
+                {member.name}
+              </div>
+              <div style={{ fontSize: 12, color: 'rgba(13,13,13,0.45)', fontWeight: 500 }}>
+                {member.role}
+              </div>
             </motion.div>
           ))}
         </div>

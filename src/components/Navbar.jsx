@@ -5,87 +5,112 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         zIndex: 1000,
-        padding: '16px 40px',
+        padding: '20px 32px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        background: scrolled ? 'rgba(255,255,255,0.92)' : 'transparent',
+        background: scrolled ? 'rgba(242,237,228,0.92)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         transition: 'background 0.3s ease, backdrop-filter 0.3s ease',
+        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.06)' : 'none',
       }}
     >
+      {/* Left — logo */}
       <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <img
-          src="/logo.png"
-          alt="NexLevr logo"
-          style={{ width: 32, height: 32, borderRadius: 6, objectFit: 'cover' }}
-        />
-        <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: '#111' }}>NexLevr</span>
+        <div style={{
+          background: '#e63030',
+          width: 36,
+          height: 36,
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 16,
+          fontWeight: 900,
+          color: '#fff',
+          letterSpacing: '-1px',
+          border: '2px solid #0d0d0d',
+        }}>
+          N
+        </div>
+        <span style={{
+          fontWeight: 800,
+          fontSize: 15,
+          letterSpacing: '-0.3px',
+          color: '#0d0d0d',
+        }}>
+          nexlevr
+        </span>
       </a>
 
-      <div style={{
-        display: 'flex',
-        gap: 4,
-        background: 'rgba(255,255,255,0.85)',
-        borderRadius: 50,
-        padding: '8px 16px',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(0,0,0,0.08)',
+      {/* Center — brand name */}
+      <span style={{
+        fontFamily: "'DM Serif Display', Georgia, serif",
+        fontStyle: 'italic',
+        fontSize: 22,
+        color: '#0d0d0d',
+        letterSpacing: '-0.5px',
+        position: 'absolute',
+        left: '50%',
+        transform: 'translateX(-50%)',
       }}>
-        {['Our Work', 'Services', 'Team', 'Internship'].map((item) => (
+        nexlevr
+      </span>
+
+      {/* Right — nav links + CTA */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+        {['services', 'team', 'pricing'].map((item) => (
           <a
             key={item}
-            href={`#${item.toLowerCase().replace(' ', '-')}`}
+            href={`#${item}`}
             style={{
-              padding: '6px 16px',
-              borderRadius: 50,
               fontSize: 14,
               fontWeight: 500,
-              color: '#111',
-              transition: 'background 0.2s',
+              color: '#0d0d0d',
+              opacity: 0.6,
+              transition: 'opacity 0.2s',
             }}
-            onMouseEnter={e => e.target.style.background = 'rgba(0,0,0,0.06)'}
-            onMouseLeave={e => e.target.style.background = 'transparent'}
+            onMouseEnter={e => e.target.style.opacity = 1}
+            onMouseLeave={e => e.target.style.opacity = 0.6}
           >
             {item}
           </a>
         ))}
-      </div>
 
-      <a
-        href="#contact"
-        style={{
-          background: '#e63030',
-          color: '#fff',
-          padding: '12px 24px',
-          borderRadius: 50,
-          fontSize: 14,
-          fontWeight: 600,
-          letterSpacing: '-0.2px',
-          transition: 'transform 0.2s, background 0.2s',
-          display: 'inline-block',
-        }}
-        onMouseEnter={e => { e.target.style.transform = 'scale(1.04)'; e.target.style.background = '#c42424'; }}
-        onMouseLeave={e => { e.target.style.transform = 'scale(1)'; e.target.style.background = '#e63030'; }}
-      >
-        Start a Project
-      </a>
+        <motion.a
+          href="#contact"
+          whileHover={{ scale: 1.05, background: '#0d0d0d' }}
+          whileTap={{ scale: 0.97 }}
+          style={{
+            background: '#0d0d0d',
+            color: '#f2ede4',
+            padding: '10px 20px',
+            borderRadius: 50,
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '-0.2px',
+            transition: 'background 0.2s',
+          }}
+        >
+          start a project →
+        </motion.a>
+      </div>
     </motion.nav>
   );
 }

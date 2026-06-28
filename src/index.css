@@ -5,12 +5,12 @@
 }
 
 :root {
+  --cream: #f2ede4;
+  --black: #0d0d0d;
+  --blue: #5566EE;
   --red: #e63030;
-  --red-light: #fff0f0;
-  --black: #111111;
-  --white: #ffffff;
-  --gray: #666666;
-  --font: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
 }
 
 html {
@@ -18,8 +18,8 @@ html {
 }
 
 body {
-  font-family: var(--font);
-  background: var(--white);
+  font-family: var(--font-sans);
+  background: var(--cream);
   color: var(--black);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -40,5 +40,10 @@ button {
   cursor: pointer;
   border: none;
   outline: none;
-  font-family: var(--font);
+  font-family: var(--font-sans);
+}
+
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
 }
