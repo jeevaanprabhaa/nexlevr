@@ -1,7 +1,9 @@
 import Navbar from './components/Navbar';
 import ScrollProgress from './components/ScrollProgress';
+import CursorGlow from './components/CursorGlow';
+import PageLoader from './components/PageLoader';
+import FloatingCTA from './components/FloatingCTA';
 import Hero from './sections/Hero';
-import Marquee from './sections/Marquee';
 import Stats from './sections/Stats';
 import Services from './sections/Services';
 import WhyUs from './sections/WhyUs';
@@ -15,16 +17,16 @@ import './App.css';
 function App() {
   return (
     <>
+      <PageLoader />
+      <CursorGlow />
+      <FloatingCTA />
       <ScrollProgress />
       <Navbar />
       <Hero />
-      <Marquee />
       <Stats />
-      <Marquee dark />
       <Services />
       <WhyUs />
       <HowItWorks />
-      <Marquee />
       <Team />
       <Pricing />
       <FAQ />

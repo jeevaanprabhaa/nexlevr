@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const CDN = 'https://framerusercontent.com/assets';
@@ -12,13 +12,50 @@ const VIDEOS = [
   `${CDN}/u5EiP1O7LeCR5CU5uChapC0XeWY.mp4`,
 ];
 
-const CARD_HEIGHTS = [360, 395, 370, 410, 355, 390, 365];
-const CARD_WIDTHS  = [190, 200, 190, 210, 185, 200, 190];
+const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
+const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
 
 export default function Hero() {
   const ref = useRef(null);
+  const stripRef = useRef(null);
+  const rafRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+
+  // Scroll-based parallax on the text block
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const stripX = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%']);
+
+  // Mouse parallax on video strip — RAF-based, no React state re-renders
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    const onMove = (e) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      mouseRef.current = {
+        x: (e.clientX - cx) / cx,
+        y: (e.clientY - cy) / cy,
+      };
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+
+    const tick = () => {
+      if (stripRef.current) {
+        const tx = mouseRef.current.x * -10;
+        const ty = mouseRef.current.y * -5;
+        stripRef.current.style.transform =
+          `rotate(-3deg) translateX(${tx}px) translateY(${ty}px)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   return (
     <section
@@ -39,35 +76,43 @@ export default function Hero() {
         position: 'relative',
       }}
     >
-      {/* Headline */}
-      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        <motion.h1
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          style={{
-            fontSize: 'clamp(52px, 9vw, 120px)',
-            fontWeight: 900,
-            lineHeight: 0.92,
-            letterSpacing: '-4px',
-            color: '#111',
-            margin: 0,
-            marginBottom: 36,
-          }}
-        >
-          We Build.<br />
-          We Ship.<br />
-          <em style={{
-            color: '#e63030',
-            fontStyle: 'italic',
-            fontWeight: 900,
-          }}>You Grow.</em>
-        </motion.h1>
+      {/* Headline with scroll parallax */}
+      <motion.div style={{ y: textY, maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+        {/* Word-by-word stagger */}
+        <div style={{
+          fontSize: 'clamp(52px, 9vw, 120px)',
+          fontWeight: 900,
+          lineHeight: 0.92,
+          letterSpacing: '-4px',
+          color: '#111',
+          margin: 0,
+          marginBottom: 36,
+        }}>
+          {['Build.', 'Ship.'].map((word, wi) => (
+            <motion.div
+              key={word}
+              initial={{ opacity: 0, x: -60 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: wi * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            >
+              We {word}
+            </motion.div>
+          ))}
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <em style={{ color: '#e63030', fontStyle: 'italic', fontWeight: 900 }}>
+              You Grow.
+            </em>
+          </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', marginBottom: 16 }}
         >
           <p style={{
@@ -81,79 +126,120 @@ export default function Hero() {
           </p>
 
           <motion.a
-            href="#our-work"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
+            href="#pricing"
+            whileHover={{ scale: 1.05, background: '#c42020' }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 10,
               background: '#e63030',
               color: '#fff',
-              padding: '16px 32px',
+              padding: '18px 36px',
               borderRadius: 50,
               fontSize: 15,
               fontWeight: 700,
               letterSpacing: '-0.2px',
+              boxShadow: '0 8px 32px rgba(230,48,48,0.35)',
             }}
           >
-            View Our Work
+            Start a Project
             <span style={{ fontSize: 20, lineHeight: 1 }}>→</span>
           </motion.a>
-        </motion.div>
-      </div>
 
-      {/* Tilted infinite video strip */}
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        style={{
-          width: '100%',
-          marginTop: 64,
-          transform: 'rotate(-6deg)',
-          transformOrigin: 'center center',
-          position: 'relative',
-          left: '-5%',
-          width: '110%',
-        }}
-      >
+          <motion.a
+            href="#services"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              color: '#111',
+              padding: '18px 32px',
+              borderRadius: 50,
+              fontSize: 15,
+              fontWeight: 600,
+              border: '1.5px solid rgba(0,0,0,0.15)',
+            }}
+          >
+            View Services
+          </motion.a>
+        </motion.div>
+
+        {/* Trust badges */}
         <motion.div
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          style={{ display: 'flex', gap: 24, marginTop: 24, flexWrap: 'wrap' }}
+        >
+          {['75+ Projects Shipped', '16+ Brands Built', 'Student-Led Team'].map((badge) => (
+            <div key={badge} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              fontSize: 13, color: '#888', fontWeight: 500,
+            }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#e63030' }} />
+              {badge}
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
+
+      {/* Video strip — slightly bent (-3deg), slightly left, mouse parallax via ref */}
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.5 }}
+        style={{ width: '110%', marginTop: 72, position: 'relative', left: '-5%' }}
+      >
+        {/* Inner div receives the RAF-driven transform */}
+        <div
+          ref={stripRef}
           style={{
-            display: 'flex',
-            gap: 16,
-            width: 'max-content',
+            transform: 'rotate(-3deg)',
+            transformOrigin: 'center center',
+            willChange: 'transform',
           }}
         >
-          {[...VIDEOS, ...VIDEOS].map((src, i) => {
-            const idx = i % VIDEOS.length;
-            return (
-              <div
-                key={i}
-                style={{
-                  width: CARD_WIDTHS[idx],
-                  height: CARD_HEIGHTS[idx],
-                  borderRadius: 20,
-                  overflow: 'hidden',
-                  flexShrink: 0,
-                  background: '#ddd',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                }}
-              >
-                <video
-                  src={src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-            );
-          })}
-        </motion.div>
+          <motion.div
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 32, repeat: Infinity, ease: 'linear' }}
+            style={{ display: 'flex', gap: 14, width: 'max-content' }}
+          >
+            {[...VIDEOS, ...VIDEOS].map((src, i) => {
+              const idx = i % VIDEOS.length;
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.05, zIndex: 2 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  style={{
+                    width: CARD_WIDTHS[idx],
+                    height: CARD_HEIGHTS[idx],
+                    borderRadius: 18,
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                    background: '#ddd',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.14)',
+                    cursor: 'pointer',
+                    position: 'relative',
+                  }}
+                >
+                  <video
+                    src={src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );
