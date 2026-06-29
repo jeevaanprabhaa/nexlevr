@@ -1,101 +1,17 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 
 const clients = [
-  {
-    name: 'restaurants',
-    color: '#E8602C', text: '#f2ede4',
-    emoji: '🍽️', stickerBg: '#f5e642', stickerAngle: -14,
-    built: ['custom booking sites', 'menu websites', 'delivery pages', 'brand identity'],
-  },
-  {
-    name: 'gyms & fitness',
-    color: '#C4B5F5', text: '#0d0d0d',
-    emoji: '💪', stickerBg: '#1B5E35', stickerAngle: 18,
-    built: ['membership portals', 'class scheduling', 'trainer profiles', 'promo pages'],
-  },
-  {
-    name: 'e-commerce',
-    color: '#1B5E35', text: '#f2ede4',
-    emoji: '🛒', stickerBg: '#f5e642', stickerAngle: -10,
-    built: ['storefront builds', 'product pages', 'brand kits', 'checkout flows'],
-  },
-  {
-    name: 'construction',
-    color: '#f5e642', text: '#0d0d0d',
-    emoji: '🏗️', stickerBg: '#E8602C', stickerAngle: 20,
-    built: ['company websites', 'project portfolios', 'lead gen forms', 'brand identity'],
-  },
-  {
-    name: 'education',
-    color: '#5B5EF4', text: '#f2ede4',
-    emoji: '📚', stickerBg: '#FFB7C5', stickerAngle: -16,
-    built: ['course platforms', 'tutor portals', 'student dashboards', 'landing pages'],
-  },
-  {
-    name: 'interior design',
-    color: '#7B2842', text: '#f2ede4',
-    emoji: '🛋️', stickerBg: '#C4B5F5', stickerAngle: 12,
-    built: ['portfolio sites', 'client galleries', 'brand identity', 'booking systems'],
-  },
-  {
-    name: 'startups',
-    color: '#0d0d0d', text: '#f2ede4',
-    emoji: '🚀', stickerBg: '#f5e642', stickerAngle: -20,
-    built: ['mvp builds', 'saas dashboards', 'pitch decks', 'brand kits'],
-  },
-  {
-    name: 'saas products',
-    color: '#FFB7C5', text: '#0d0d0d',
-    emoji: '⚡', stickerBg: '#5B5EF4', stickerAngle: 16,
-    built: ['dashboard ui', 'user onboarding', 'landing pages', 'product design'],
-  },
-  {
-    name: 'crm systems',
-    color: '#C4B5F5', text: '#0d0d0d',
-    emoji: '📊', stickerBg: '#E8602C', stickerAngle: -8,
-    built: ['custom crm builds', 'data dashboards', 'workflow automation', 'api integrations'],
-  },
+  { name: 'restaurants',     emoji: '🍽️', color: '#E8602C', text: '#f2ede4', tag: '#f5e642', built: ['custom booking sites', 'menu websites', 'delivery pages', 'brand identity'] },
+  { name: 'gyms & fitness',  emoji: '💪', color: '#C4B5F5', text: '#0d0d0d', tag: '#1B5E35', built: ['membership portals', 'class scheduling', 'trainer profiles', 'promo pages'] },
+  { name: 'e-commerce',      emoji: '🛒', color: '#1B5E35', text: '#f2ede4', tag: '#f5e642', built: ['storefront builds', 'product pages', 'brand kits', 'checkout flows'] },
+  { name: 'construction',    emoji: '🏗️', color: '#f5e642', text: '#0d0d0d', tag: '#E8602C', built: ['company websites', 'project portfolios', 'lead gen forms', 'brand identity'] },
+  { name: 'education',       emoji: '📚', color: '#5B5EF4', text: '#f2ede4', tag: '#FFB7C5', built: ['course platforms', 'tutor portals', 'student dashboards', 'landing pages'] },
+  { name: 'interior design', emoji: '🛋️', color: '#7B2842', text: '#f2ede4', tag: '#C4B5F5', built: ['portfolio sites', 'client galleries', 'brand identity', 'booking systems'] },
+  { name: 'startups',        emoji: '🚀', color: '#0d0d0d', text: '#f2ede4', tag: '#f5e642', built: ['mvp builds', 'saas dashboards', 'pitch decks', 'brand kits'] },
+  { name: 'saas products',   emoji: '⚡', color: '#FFB7C5', text: '#0d0d0d', tag: '#5B5EF4', built: ['dashboard ui', 'user onboarding', 'landing pages', 'product design'] },
+  { name: 'crm systems',     emoji: '📊', color: '#C4B5F5', text: '#0d0d0d', tag: '#E8602C', built: ['custom crm builds', 'data dashboards', 'workflow automation', 'api integrations'] },
 ];
-
-const N = clients.length; // 9
-
-// ── idle fan: spread across full width ──
-const IDLE_POSITIONS = clients.map((_, i) => ({
-  x:      (i - (N - 1) / 2) * 130,
-  y:      Math.abs(i - (N - 1) / 2) * 12,
-  rotate: (i - (N - 1) / 2) * 5,
-  scale:  1 - Math.abs(i - (N - 1) / 2) * 0.02,
-  zIndex: N - Math.abs(i - (N - 1) / 2),
-}));
-
-const SHOWCASE_X  = -360;
-const FAN_START_X =  50;
-const FAN_SPACING =  68;
-
-function getPositions(active) {
-  if (active === null) return IDLE_POSITIONS;
-
-  const others = clients.map((_, i) => i).filter(i => i !== active);
-
-  return clients.map((_, i) => {
-    if (i === active) {
-      return { x: SHOWCASE_X, y: -10, rotate: 0, scale: 1, zIndex: 20 };
-    }
-    const fi = others.indexOf(i);
-    const dir = fi < others.length / 2 ? -1 : 1;
-    return {
-      x:      FAN_START_X + fi * FAN_SPACING,
-      y:      Math.abs(fi - (others.length - 1) / 2) * 12,
-      rotate: dir * (5 + fi * 3.5),
-      scale:  0.72 - fi * 0.01,
-      zIndex: others.length - fi,
-    };
-  });
-}
-
-const FLOAT_Y = [9, 7, 11, 8, 10, 8, 12, 7, 10];
-const FLOAT_D = [3.3, 2.9, 3.7, 2.7, 3.4, 2.8, 3.1, 3.6, 2.6];
 
 const reasons = [
   { num: '01', title: 'real projects. real clients.', desc: 'every project in our portfolio was built for an actual client. no mock-ups, no fake work.' },
@@ -103,15 +19,150 @@ const reasons = [
   { num: '03', title: 'fast turnaround',              desc: 'landing pages in 3–5 days. full apps in 2–6 weeks. we always give a clear timeline upfront.' },
 ];
 
+function TiltCard({ c, i, isSelected, onClick }) {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-60, 60], [12, -12]);
+  const rotateY = useTransform(x, [-60, 60], [-12, 12]);
+  const springX = useSpring(rotateX, { stiffness: 300, damping: 25 });
+  const springY = useSpring(rotateY, { stiffness: 300, damping: 25 });
+
+  function handleMouseMove(e) {
+    if (isSelected) return;
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    x.set(e.clientX - cx);
+    y.set(e.clientY - cy);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
+      aria-pressed={isSelected}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        perspective: 800,
+        cursor: 'pointer',
+        outline: 'none',
+      }}
+    >
+      <motion.div
+        style={{
+          rotateX: isSelected ? 0 : springX,
+          rotateY: isSelected ? 0 : springY,
+          transformStyle: 'preserve-3d',
+          position: 'relative',
+          borderRadius: 20,
+          background: c.color,
+          border: isSelected ? `3px solid #0d0d0d` : '2.5px solid transparent',
+          boxShadow: isSelected
+            ? '0 0 0 4px #0d0d0d, 0 24px 60px rgba(0,0,0,0.28)'
+            : '0 6px 24px rgba(0,0,0,0.13)',
+          padding: '28px 24px 24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          userSelect: 'none',
+          transition: 'border 0.2s, box-shadow 0.2s',
+        }}
+        whileHover={!isSelected ? { scale: 1.04 } : {}}
+        whileTap={{ scale: 0.97 }}
+        animate={{ scale: isSelected ? 1.02 : 1 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+      >
+        {/* Emoji badge */}
+        <motion.div
+          animate={{ rotate: isSelected ? [0, -12, 12, -8, 0] : 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: '50%',
+            background: c.tag,
+            border: '2.5px solid #0d0d0d',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 24,
+            boxShadow: '2px 3px 0 #0d0d0d',
+            marginBottom: 4,
+          }}
+        >
+          {c.emoji}
+        </motion.div>
+
+        <h3 style={{
+          fontSize: 17,
+          fontWeight: 900,
+          color: c.text,
+          letterSpacing: '-0.5px',
+          lineHeight: 1.2,
+        }}>
+          {c.name}
+        </h3>
+
+        <p style={{
+          fontSize: 12,
+          color: c.text,
+          opacity: 0.5,
+          fontWeight: 600,
+        }}>
+          {c.built.length} deliverables →
+        </p>
+
+        {/* Selected indicator dot */}
+        <AnimatePresence>
+          {isSelected && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              style={{
+                position: 'absolute',
+                top: 14,
+                right: 14,
+                width: 10,
+                height: 10,
+                borderRadius: '50%',
+                background: c.text,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function WhyUs() {
-  const [active, setActive] = useState(null);
-  const positions = getPositions(active);
+  const [selected, setSelected] = useState(null);
+  const c = selected !== null ? clients[selected] : null;
+
+  function toggle(i) {
+    setSelected(prev => (prev === i ? null : i));
+  }
 
   return (
     <section style={{ background: '#f2ede4', padding: '120px 0 100px', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 60px' }}>
 
-        {/* ── Headline ── */}
+        {/* Headline */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,8 +176,7 @@ export default function WhyUs() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              width: 72,
-              height: 72,
+              width: 72, height: 72,
               background: '#5B5EF4',
               borderRadius: '60% 40% 70% 30% / 50% 60% 40% 50%',
               margin: '0 auto 22px',
@@ -148,221 +198,235 @@ export default function WhyUs() {
               worked with:
             </em>
           </h2>
-        </motion.div>
-      </div>
-
-      {/* ── Card stage – full width ── */}
-      <div style={{
-        position: 'relative',
-        height: 520,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        {clients.map((c, i) => {
-          const pos      = positions[i];
-          const isActive = active === i;
-          const hasActive = active !== null;
-
-          return (
-            <motion.div
-              key={c.name}
-              style={{ position: 'absolute', zIndex: pos.zIndex }}
-              animate={{ x: pos.x, y: pos.y, rotate: pos.rotate, scale: pos.scale }}
-              transition={{ type: 'spring', stiffness: 280, damping: 28, mass: 0.9 }}
-            >
-              {/* float bob */}
-              <motion.div
-                animate={hasActive ? { y: 0 } : { y: [0, -FLOAT_Y[i], 0] }}
-                transition={hasActive
-                  ? { duration: 0.3 }
-                  : { duration: FLOAT_D[i], repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }
-                }
-              >
-                {/* sticker */}
-                <motion.div
-                  animate={{ rotate: isActive ? c.stickerAngle * 0.5 : c.stickerAngle }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-                  style={{
-                    position: 'absolute',
-                    top: -34,
-                    left: isActive ? 20 : '50%',
-                    transform: isActive ? 'none' : 'translateX(-50%)',
-                    width: 62,
-                    height: 62,
-                    borderRadius: '50%',
-                    background: c.stickerBg,
-                    border: '3px solid #0d0d0d',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 26,
-                    boxShadow: '2px 3px 0 #0d0d0d',
-                    zIndex: 2,
-                    pointerEvents: 'none',
-                  }}
-                >
-                  {c.emoji}
-                </motion.div>
-
-                {/* card face */}
-                <motion.div
-                  onClick={() => setActive(isActive ? null : i)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setActive(isActive ? null : i);
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  aria-expanded={isActive}
-                  aria-label={`${c.name} industry card`}
-                  whileHover={!isActive ? { y: -8, transition: { duration: 0.22 } } : {}}
-                  style={{
-                    width:     isActive ? 260 : 180,
-                    height:    420,
-                    background: c.color,
-                    borderRadius: 20,
-                    padding:   isActive ? '30px 26px 28px' : '26px 18px 26px',
-                    cursor:    'pointer',
-                    border:    '2.5px solid rgba(0,0,0,0.13)',
-                    boxShadow: isActive
-                      ? '0 44px 96px rgba(0,0,0,0.3)'
-                      : '0 10px 30px rgba(0,0,0,0.16)',
-                    overflow:  'hidden',
-                    transition: 'width 0.4s cubic-bezier(0.22,1,0.36,1), padding 0.3s ease, box-shadow 0.3s ease',
-                    userSelect: 'none',
-                    display:   'flex',
-                    flexDirection: 'column',
-                    marginTop: 34,
-                  }}
-                >
-                  {/* name */}
-                  <h3 style={{
-                    fontSize:      isActive ? 28 : 16,
-                    fontWeight:    900,
-                    color:         c.text,
-                    letterSpacing: '-0.8px',
-                    lineHeight:    1.1,
-                    marginBottom:  14,
-                    marginTop:     6,
-                    transition:    'font-size 0.3s ease',
-                    flexShrink:    0,
-                  }}>
-                    {c.name}
-                  </h3>
-
-                  {/* divider */}
-                  <div style={{ height: 1.5, background: `${c.text}30`, marginBottom: 16, flexShrink: 0 }} />
-
-                  {/* what we built */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 9, flex: 1 }}>
-                    {c.built.map(item => (
-                      <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
-                        <span style={{ color: c.text, opacity: 0.55, fontSize: 10, marginTop: 3, flexShrink: 0 }}>✦</span>
-                        <span style={{
-                          fontSize:   isActive ? 13 : 11,
-                          color:      c.text,
-                          opacity:    0.85,
-                          fontWeight: 500,
-                          lineHeight: 1.4,
-                          transition: 'font-size 0.25s ease',
-                        }}>
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA when active */}
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.a
-                        href="mailto:janeeshpofficial@gmail.com"
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.25, delay: 0.1 }}
-                        style={{
-                          display:    'block',
-                          marginTop:  20,
-                          textAlign:  'center',
-                          padding:    '12px',
-                          borderRadius: 50,
-                          background: c.text,
-                          color:      c.color,
-                          fontSize:   12,
-                          fontWeight: 800,
-                          flexShrink: 0,
-                        }}
-                      >
-                        work with us →
-                      </motion.a>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* ── Hint ── */}
-      <div style={{ textAlign: 'center', marginTop: 16 }}>
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={active === null ? 'idle' : 'open'}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            style={{ fontSize: 13, color: 'rgba(13,13,13,0.35)' }}
-          >
-            {active === null ? 'click an industry to explore ↑' : 'click again to close  ✕'}
-          </motion.p>
-        </AnimatePresence>
-      </div>
-
-      {/* ── Why us reasons ── */}
-      <div style={{ maxWidth: 1100, margin: '80px auto 0', padding: '0 60px' }}>
-        <div style={{ borderTop: '2px solid #0d0d0d', paddingTop: 60 }}>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            style={{
-              fontSize: 11, fontWeight: 700, letterSpacing: '2.5px',
-              textTransform: 'uppercase', color: 'rgba(13,13,13,0.35)',
-              marginBottom: 40, textAlign: 'center',
-            }}
+            transition={{ delay: 0.3 }}
+            style={{ marginTop: 18, fontSize: 14, color: 'rgba(13,13,13,0.4)', fontWeight: 500 }}
           >
-            why clients choose nexlevr
+            tap any industry to explore what we built
           </motion.p>
+        </motion.div>
 
-          {reasons.map((r, i) => (
+        {/* Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 16,
+          position: 'relative',
+        }}>
+          {clients.map((client, i) => (
+            <TiltCard
+              key={client.name}
+              c={client}
+              i={i}
+              isSelected={selected === i}
+              onClick={() => toggle(i)}
+            />
+          ))}
+        </div>
+
+        {/* Detail panel */}
+        <AnimatePresence mode="wait">
+          {selected !== null && (
             <motion.div
-              key={r.num}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              key={selected}
+              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+              animate={{ opacity: 1, height: 'auto', marginTop: 24 }}
+              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              <motion.div
+                style={{
+                  background: c.color,
+                  borderRadius: 24,
+                  border: '2.5px solid #0d0d0d',
+                  boxShadow: '4px 6px 0 #0d0d0d',
+                  padding: '36px 40px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 40,
+                }}
+              >
+                {/* Left: emoji + name */}
+                <div style={{ flexShrink: 0 }}>
+                  <motion.div
+                    initial={{ scale: 0.5, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 320, damping: 18 }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      background: c.tag,
+                      border: '2.5px solid #0d0d0d',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 38,
+                      boxShadow: '3px 4px 0 #0d0d0d',
+                      marginBottom: 16,
+                    }}
+                  >
+                    {c.emoji}
+                  </motion.div>
+                  <motion.h3
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 900,
+                      color: c.text,
+                      letterSpacing: '-0.6px',
+                      maxWidth: 130,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {c.name}
+                  </motion.h3>
+                </div>
+
+                {/* Divider */}
+                <div style={{ width: 1.5, alignSelf: 'stretch', background: `${c.text}25`, flexShrink: 0 }} />
+
+                {/* Right: what we built */}
+                <div style={{ flex: 1 }}>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.08 }}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: '2px',
+                      textTransform: 'uppercase',
+                      color: c.text,
+                      opacity: 0.45,
+                      marginBottom: 20,
+                    }}
+                  >
+                    what we built
+                  </motion.p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+                    {c.built.map((item, idx) => (
+                      <motion.div
+                        key={item}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.12 + idx * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 10 }}
+                      >
+                        <span style={{
+                          width: 28, height: 28, borderRadius: '50%',
+                          background: c.tag,
+                          border: '2px solid #0d0d0d',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: 11, fontWeight: 800, color: '#0d0d0d',
+                          flexShrink: 0,
+                        }}>
+                          {idx + 1}
+                        </span>
+                        <span style={{ fontSize: 15, fontWeight: 700, color: c.text, letterSpacing: '-0.2px' }}>
+                          {item}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <motion.a
+                    href="mailto:janeeshpofficial@gmail.com"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      marginTop: 28,
+                      padding: '12px 24px',
+                      borderRadius: 50,
+                      background: c.text,
+                      color: c.color,
+                      fontSize: 13,
+                      fontWeight: 800,
+                      textDecoration: 'none',
+                      boxShadow: `3px 3px 0 ${c.tag}`,
+                      border: `2px solid ${c.text}`,
+                    }}
+                  >
+                    start a project with us →
+                  </motion.a>
+                </div>
+
+                {/* Close btn */}
+                <motion.button
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, type: 'spring' }}
+                  onClick={() => setSelected(null)}
+                  style={{
+                    width: 36, height: 36, borderRadius: '50%',
+                    background: c.text, color: c.color,
+                    border: 'none', cursor: 'pointer',
+                    fontSize: 16, fontWeight: 900,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, alignSelf: 'flex-start',
+                    boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+                  }}
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Close"
+                >
+                  ✕
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Why us reasons */}
+        <div style={{ marginTop: 100 }}>
+          <div style={{ borderTop: '2px solid #0d0d0d', paddingTop: 60 }}>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                display: 'grid',
-                gridTemplateColumns: '52px 1fr 1fr',
-                gap: 36,
-                padding: '30px 0',
-                borderBottom: '1px solid rgba(13,13,13,0.09)',
-                alignItems: 'start',
+                fontSize: 11, fontWeight: 700, letterSpacing: '2.5px',
+                textTransform: 'uppercase', color: 'rgba(13,13,13,0.35)',
+                marginBottom: 40, textAlign: 'center',
               }}
             >
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#e63030', paddingTop: 3 }}>{r.num}</span>
-              <h4 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', color: '#0d0d0d', lineHeight: 1.3 }}>
-                {r.title}
-              </h4>
-              <p style={{ fontSize: 14, color: 'rgba(13,13,13,0.5)', lineHeight: 1.75 }}>{r.desc}</p>
-            </motion.div>
-          ))}
+              why clients choose nexlevr
+            </motion.p>
+
+            {reasons.map((r, i) => (
+              <motion.div
+                key={r.num}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '52px 1fr 1fr',
+                  gap: 36,
+                  padding: '30px 0',
+                  borderBottom: '1px solid rgba(13,13,13,0.09)',
+                  alignItems: 'start',
+                }}
+              >
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#e63030', paddingTop: 3 }}>{r.num}</span>
+                <h4 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.4px', color: '#0d0d0d', lineHeight: 1.3 }}>
+                  {r.title}
+                </h4>
+                <p style={{ fontSize: 14, color: 'rgba(13,13,13,0.5)', lineHeight: 1.75 }}>{r.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
