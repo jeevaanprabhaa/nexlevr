@@ -19,7 +19,7 @@ const reasons = [
   { num: '03', title: 'fast turnaround',              desc: 'landing pages in 3–5 days. full apps in 2–6 weeks. we always give a clear timeline upfront.' },
 ];
 
-function TiltCard({ c, i, isSelected, onClick }) {
+function TiltCard({ c, i, isHovered, onEnter }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -29,12 +29,9 @@ function TiltCard({ c, i, isSelected, onClick }) {
   const springY = useSpring(rotateY, { stiffness: 300, damping: 25 });
 
   function handleMouseMove(e) {
-    if (isSelected) return;
     const rect = ref.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    x.set(e.clientX - cx);
-    y.set(e.clientY - cy);
+    x.set(e.clientX - (rect.left + rect.width / 2));
+    y.set(e.clientY - (rect.top + rect.height / 2));
   }
 
   function handleMouseLeave() {
@@ -46,32 +43,24 @@ function TiltCard({ c, i, isSelected, onClick }) {
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onMouseEnter={onEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
-      aria-pressed={isSelected}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        perspective: 800,
-        cursor: 'pointer',
-        outline: 'none',
-      }}
+      style={{ perspective: 800, cursor: 'default', outline: 'none' }}
     >
       <motion.div
         style={{
-          rotateX: isSelected ? 0 : springX,
-          rotateY: isSelected ? 0 : springY,
+          rotateX: isHovered ? 0 : springX,
+          rotateY: isHovered ? 0 : springY,
           transformStyle: 'preserve-3d',
           position: 'relative',
           borderRadius: 20,
           background: c.color,
-          border: isSelected ? `3px solid #0d0d0d` : '2.5px solid transparent',
-          boxShadow: isSelected
+          border: isHovered ? '3px solid #0d0d0d' : '2.5px solid transparent',
+          boxShadow: isHovered
             ? '0 0 0 4px #0d0d0d, 0 24px 60px rgba(0,0,0,0.28)'
             : '0 6px 24px rgba(0,0,0,0.13)',
           padding: '28px 24px 24px',
@@ -79,68 +68,43 @@ function TiltCard({ c, i, isSelected, onClick }) {
           flexDirection: 'column',
           gap: 10,
           userSelect: 'none',
-          transition: 'border 0.2s, box-shadow 0.2s',
+          transition: 'border 0.15s, box-shadow 0.15s',
         }}
-        whileHover={!isSelected ? { scale: 1.04 } : {}}
-        whileTap={{ scale: 0.97 }}
-        animate={{ scale: isSelected ? 1.02 : 1 }}
-        transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+        animate={{
+          scale: isHovered ? 1.05 : 1,
+          opacity: isHovered === false ? 1 : 1,
+        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
       >
-        {/* Emoji badge */}
         <motion.div
-          animate={{ rotate: isSelected ? [0, -12, 12, -8, 0] : 0 }}
-          transition={{ duration: 0.5 }}
+          animate={{ rotate: isHovered ? [0, -12, 12, -8, 0] : 0 }}
+          transition={{ duration: 0.45 }}
           style={{
-            width: 52,
-            height: 52,
-            borderRadius: '50%',
-            background: c.tag,
-            border: '2.5px solid #0d0d0d',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 24,
-            boxShadow: '2px 3px 0 #0d0d0d',
-            marginBottom: 4,
+            width: 52, height: 52, borderRadius: '50%',
+            background: c.tag, border: '2.5px solid #0d0d0d',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 24, boxShadow: '2px 3px 0 #0d0d0d', marginBottom: 4,
           }}
         >
           {c.emoji}
         </motion.div>
 
-        <h3 style={{
-          fontSize: 17,
-          fontWeight: 900,
-          color: c.text,
-          letterSpacing: '-0.5px',
-          lineHeight: 1.2,
-        }}>
+        <h3 style={{ fontSize: 17, fontWeight: 900, color: c.text, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
           {c.name}
         </h3>
-
-        <p style={{
-          fontSize: 12,
-          color: c.text,
-          opacity: 0.5,
-          fontWeight: 600,
-        }}>
+        <p style={{ fontSize: 12, color: c.text, opacity: 0.5, fontWeight: 600 }}>
           {c.built.length} deliverables →
         </p>
 
-        {/* Selected indicator dot */}
         <AnimatePresence>
-          {isSelected && (
+          {isHovered && (
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               style={{
-                position: 'absolute',
-                top: 14,
-                right: 14,
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                background: c.text,
+                position: 'absolute', top: 14, right: 14,
+                width: 10, height: 10, borderRadius: '50%', background: c.text,
               }}
             />
           )}
@@ -151,12 +115,8 @@ function TiltCard({ c, i, isSelected, onClick }) {
 }
 
 export default function WhyUs() {
-  const [selected, setSelected] = useState(null);
-  const c = selected !== null ? clients[selected] : null;
-
-  function toggle(i) {
-    setSelected(prev => (prev === i ? null : i));
-  }
+  const [hovered, setHovered] = useState(null);
+  const c = hovered !== null ? clients[hovered] : null;
 
   return (
     <section style={{ background: '#f2ede4', padding: '120px 0 100px', overflow: 'hidden' }}>
@@ -176,25 +136,17 @@ export default function WhyUs() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              width: 72, height: 72,
-              background: '#5B5EF4',
+              width: 72, height: 72, background: '#5B5EF4',
               borderRadius: '60% 40% 70% 30% / 50% 60% 40% 50%',
               margin: '0 auto 22px',
             }}
           />
           <h2 style={{
-            fontSize: 'clamp(40px, 6vw, 80px)',
-            fontWeight: 900,
-            letterSpacing: '-4px',
-            lineHeight: 0.92,
-            color: '#0d0d0d',
+            fontSize: 'clamp(40px, 6vw, 80px)', fontWeight: 900,
+            letterSpacing: '-4px', lineHeight: 0.92, color: '#0d0d0d',
           }}>
             proud to have{' '}
-            <em style={{
-              fontFamily: "'DM Serif Display', Georgia, serif",
-              fontStyle: 'italic',
-              fontWeight: 400,
-            }}>
+            <em style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontStyle: 'italic', fontWeight: 400 }}>
               worked with:
             </em>
           </h2>
@@ -205,187 +157,139 @@ export default function WhyUs() {
             transition={{ delay: 0.3 }}
             style={{ marginTop: 18, fontSize: 14, color: 'rgba(13,13,13,0.4)', fontWeight: 500 }}
           >
-            tap any industry to explore what we built
+            hover over an industry to explore what we built
           </motion.p>
         </motion.div>
 
-        {/* Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 16,
-          position: 'relative',
-        }}>
-          {clients.map((client, i) => (
-            <TiltCard
-              key={client.name}
-              c={client}
-              i={i}
-              isSelected={selected === i}
-              onClick={() => toggle(i)}
-            />
-          ))}
-        </div>
+        {/* Hover zone: grid + panel together so moving into panel keeps it open */}
+        <div onMouseLeave={() => setHovered(null)}>
 
-        {/* Detail panel */}
-        <AnimatePresence mode="wait">
-          {selected !== null && (
-            <motion.div
-              key={selected}
-              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: 'auto', marginTop: 24 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              style={{ overflow: 'hidden' }}
-            >
+          {/* Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+            {clients.map((client, i) => (
+              <TiltCard
+                key={client.name}
+                c={client}
+                i={i}
+                isHovered={hovered === i}
+                onEnter={() => setHovered(i)}
+              />
+            ))}
+          </div>
+
+          {/* Detail panel — appears below on hover */}
+          <AnimatePresence mode="wait">
+            {hovered !== null && (
               <motion.div
-                style={{
-                  background: c.color,
-                  borderRadius: 24,
-                  border: '2.5px solid #0d0d0d',
-                  boxShadow: '4px 6px 0 #0d0d0d',
-                  padding: '36px 40px',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 40,
-                }}
+                key={hovered}
+                initial={{ opacity: 0, y: -16, height: 0, marginTop: 0 }}
+                animate={{ opacity: 1, y: 0, height: 'auto', marginTop: 20 }}
+                exit={{ opacity: 0, y: -10, height: 0, marginTop: 0 }}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                style={{ overflow: 'hidden' }}
               >
-                {/* Left: emoji + name */}
-                <div style={{ flexShrink: 0 }}>
-                  <motion.div
-                    initial={{ scale: 0.5, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 320, damping: 18 }}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      background: c.tag,
-                      border: '2.5px solid #0d0d0d',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 38,
-                      boxShadow: '3px 4px 0 #0d0d0d',
-                      marginBottom: 16,
-                    }}
-                  >
-                    {c.emoji}
-                  </motion.div>
-                  <motion.h3
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 900,
-                      color: c.text,
-                      letterSpacing: '-0.6px',
-                      maxWidth: 130,
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {c.name}
-                  </motion.h3>
-                </div>
-
-                {/* Divider */}
-                <div style={{ width: 1.5, alignSelf: 'stretch', background: `${c.text}25`, flexShrink: 0 }} />
-
-                {/* Right: what we built */}
-                <div style={{ flex: 1 }}>
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.08 }}
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: '2px',
-                      textTransform: 'uppercase',
-                      color: c.text,
-                      opacity: 0.45,
-                      marginBottom: 20,
-                    }}
-                  >
-                    what we built
-                  </motion.p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
-                    {c.built.map((item, idx) => (
-                      <motion.div
-                        key={item}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.12 + idx * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                        style={{ display: 'flex', alignItems: 'center', gap: 10 }}
-                      >
-                        <span style={{
-                          width: 28, height: 28, borderRadius: '50%',
-                          background: c.tag,
-                          border: '2px solid #0d0d0d',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontSize: 11, fontWeight: 800, color: '#0d0d0d',
-                          flexShrink: 0,
-                        }}>
-                          {idx + 1}
-                        </span>
-                        <span style={{ fontSize: 15, fontWeight: 700, color: c.text, letterSpacing: '-0.2px' }}>
-                          {item}
-                        </span>
-                      </motion.div>
-                    ))}
+                <div
+                  style={{
+                    background: c.color,
+                    borderRadius: 24,
+                    border: '2.5px solid #0d0d0d',
+                    boxShadow: '4px 6px 0 #0d0d0d',
+                    padding: '36px 40px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 40,
+                  }}
+                >
+                  {/* Left: emoji + name */}
+                  <div style={{ flexShrink: 0 }}>
+                    <motion.div
+                      initial={{ scale: 0.5, rotate: -20 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: 'spring', stiffness: 320, damping: 18 }}
+                      style={{
+                        width: 80, height: 80, borderRadius: '50%',
+                        background: c.tag, border: '2.5px solid #0d0d0d',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 38, boxShadow: '3px 4px 0 #0d0d0d', marginBottom: 16,
+                      }}
+                    >
+                      {c.emoji}
+                    </motion.div>
+                    <motion.h3
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.08 }}
+                      style={{
+                        fontSize: 22, fontWeight: 900, color: c.text,
+                        letterSpacing: '-0.6px', maxWidth: 130, lineHeight: 1.2,
+                      }}
+                    >
+                      {c.name}
+                    </motion.h3>
                   </div>
 
-                  <motion.a
-                    href="mailto:janeeshpofficial@gmail.com"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35 }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      marginTop: 28,
-                      padding: '12px 24px',
-                      borderRadius: 50,
-                      background: c.text,
-                      color: c.color,
-                      fontSize: 13,
-                      fontWeight: 800,
-                      textDecoration: 'none',
-                      boxShadow: `3px 3px 0 ${c.tag}`,
-                      border: `2px solid ${c.text}`,
-                    }}
-                  >
-                    start a project with us →
-                  </motion.a>
-                </div>
+                  {/* Divider */}
+                  <div style={{ width: 1.5, alignSelf: 'stretch', background: `${c.text}25`, flexShrink: 0 }} />
 
-                {/* Close btn */}
-                <motion.button
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2, type: 'spring' }}
-                  onClick={() => setSelected(null)}
-                  style={{
-                    width: 36, height: 36, borderRadius: '50%',
-                    background: c.text, color: c.color,
-                    border: 'none', cursor: 'pointer',
-                    fontSize: 16, fontWeight: 900,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0, alignSelf: 'flex-start',
-                    boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
-                  }}
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Close"
-                >
-                  ✕
-                </motion.button>
+                  {/* Right: deliverables */}
+                  <div style={{ flex: 1 }}>
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.45 }}
+                      transition={{ delay: 0.06 }}
+                      style={{
+                        fontSize: 11, fontWeight: 700, letterSpacing: '2px',
+                        textTransform: 'uppercase', color: c.text, marginBottom: 20,
+                      }}
+                    >
+                      what we built
+                    </motion.p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+                      {c.built.map((item, idx) => (
+                        <motion.div
+                          key={item}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 + idx * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                          style={{ display: 'flex', alignItems: 'center', gap: 10 }}
+                        >
+                          <span style={{
+                            width: 28, height: 28, borderRadius: '50%',
+                            background: c.tag, border: '2px solid #0d0d0d',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 11, fontWeight: 800, color: '#0d0d0d', flexShrink: 0,
+                          }}>
+                            {idx + 1}
+                          </span>
+                          <span style={{ fontSize: 15, fontWeight: 700, color: c.text, letterSpacing: '-0.2px' }}>
+                            {item}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <motion.a
+                      href="mailto:janeeshpofficial@gmail.com"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 8,
+                        marginTop: 28, padding: '12px 24px', borderRadius: 50,
+                        background: c.text, color: c.color,
+                        fontSize: 13, fontWeight: 800, textDecoration: 'none',
+                        boxShadow: `3px 3px 0 ${c.tag}`, border: `2px solid ${c.text}`,
+                      }}
+                    >
+                      start a project with us →
+                    </motion.a>
+                  </div>
+                </div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
+
+        </div>{/* end hover zone */}
 
         {/* Why us reasons */}
         <div style={{ marginTop: 100 }}>
@@ -411,12 +315,9 @@ export default function WhyUs() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '52px 1fr 1fr',
-                  gap: 36,
-                  padding: '30px 0',
-                  borderBottom: '1px solid rgba(13,13,13,0.09)',
-                  alignItems: 'start',
+                  display: 'grid', gridTemplateColumns: '52px 1fr 1fr',
+                  gap: 36, padding: '30px 0',
+                  borderBottom: '1px solid rgba(13,13,13,0.09)', alignItems: 'start',
                 }}
               >
                 <span style={{ fontSize: 12, fontWeight: 700, color: '#e63030', paddingTop: 3 }}>{r.num}</span>
@@ -428,6 +329,7 @@ export default function WhyUs() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );
