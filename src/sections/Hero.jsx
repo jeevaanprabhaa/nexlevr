@@ -2,15 +2,14 @@ import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import useIsMobile from '../hooks/useIsMobile';
 
-const CDN = 'https://framerusercontent.com/assets';
 const VIDEOS = [
-  `${CDN}/4YtNt00St7B1UaDXcTUAIryKfJU.mp4`,
-  `${CDN}/CEbr5RaBSAqEp1b1c5R1sbqe0A.mp4`,
-  `${CDN}/KMnVXcqVj7ii01fxHySuRYCuw2s.mp4`,
-  `${CDN}/l88G3TlXlHx8q2uaZEGxf45lFfs.mp4`,
-  `${CDN}/N05TRbevbwo7r1Z4nciijGhKmM.mp4`,
-  `${CDN}/NuVnwXG8mkMplUpYnt1k0ANTa2Y.mp4`,
-  `${CDN}/u5EiP1O7LeCR5CU5uChapC0XeWY.mp4`,
+  '/videos/v1.mp4',
+  '/videos/v2.mp4',
+  '/videos/v3.mp4',
+  '/videos/v4.mp4',
+  '/videos/v5.mp4',
+  '/videos/v6.mp4',
+  '/videos/v7.mp4',
 ];
 const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
 const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
