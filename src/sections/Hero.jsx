@@ -11,6 +11,16 @@ const VIDEOS = [
   '/videos/v6.mp4',
   '/videos/v7.mp4',
 ];
+
+const SUBTITLES = [
+  'web platform',
+  'brand identity',
+  'ui/ux design',
+  'full stack app',
+  'ai product',
+  'branding',
+  'landing page',
+];
 const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
 const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
 
@@ -242,13 +252,39 @@ export default function Hero() {
                   style={{
                     width: w, height: h,
                     borderRadius: 18, overflow: 'hidden', flexShrink: 0,
-                    background: '#222', boxShadow: '0 12px 40px rgba(0,0,0,0.5)', cursor: 'pointer',
+                    background: '#222', boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+                    cursor: 'pointer', position: 'relative',
                   }}
                 >
                   <video
                     src={src} autoPlay muted loop playsInline
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   />
+                  {/* Gradient scrim so label is readable */}
+                  <div style={{
+                    position: 'absolute', bottom: 0, left: 0, right: 0,
+                    height: '45%',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%)',
+                    pointerEvents: 'none',
+                  }} />
+                  {/* Subtitle label */}
+                  <div style={{
+                    position: 'absolute', bottom: 12, left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(255,255,255,0.12)',
+                    backdropFilter: 'blur(6px)',
+                    border: '1px solid rgba(255,255,255,0.22)',
+                    borderRadius: 50,
+                    padding: isMobile ? '3px 9px' : '4px 12px',
+                    fontSize: isMobile ? 9 : 11,
+                    fontWeight: 700,
+                    color: '#fff',
+                    letterSpacing: '0.5px',
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                  }}>
+                    {SUBTITLES[idx]}
+                  </div>
                 </motion.div>
               );
             })}
