@@ -47,3 +47,42 @@ button {
   font-family: var(--font-serif);
   font-style: italic;
 }
+
+/* ── Nav hamburger: hidden by default, shown on mobile ── */
+.nav-hamburger { display: none; }
+.nav-mobile-menu { display: none; }
+
+/* ── Hero stickers: hide extra ones on mobile ── */
+@media (max-width: 768px) {
+  .nav-center { display: none !important; }
+  .nav-links  { display: none !important; }
+  .nav-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    background: transparent;
+    border: 2px solid #0d0d0d;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: #0d0d0d;
+  }
+  .nav-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: absolute;
+    top: 72px; left: 0; right: 0;
+    background: rgba(242,237,228,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 12px 20px 20px;
+  }
+  .hero-sticker-mob-hide { display: none !important; }
+  .mob-grid-1 { grid-template-columns: 1fr !important; }
+  .mob-grid-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .footer-sticker { display: none !important; }
+  .why-panel { flex-direction: column !important; gap: 24px !important; }
+  .why-panel-divider { display: none !important; }
+}

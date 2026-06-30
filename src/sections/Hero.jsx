@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 const CDN = 'https://framerusercontent.com/assets';
 const VIDEOS = [
@@ -14,9 +15,10 @@ const VIDEOS = [
 const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
 const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
 
-function Sticker({ emoji, bg, angle, top, left, right, bottom, size = 60 }) {
+function Sticker({ emoji, bg, angle, top, left, right, bottom, size = 60, mobileHide }) {
   return (
     <motion.div
+      className={mobileHide ? 'hero-sticker-mob-hide' : ''}
       initial={{ opacity: 0, scale: 0.5, rotate: angle - 10 }}
       animate={{ opacity: 1, scale: 1, rotate: angle }}
       transition={{ duration: 0.6, delay: 1.2, type: 'spring', bounce: 0.5 }}
@@ -47,6 +49,7 @@ export default function Hero() {
   const stripRef = useRef(null);
   const rafRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-15%']);
@@ -87,27 +90,27 @@ export default function Hero() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '140px 60px 0',
+        padding: isMobile ? '110px 20px 0' : '140px 60px 0',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Stickers */}
-      <Sticker emoji="😊" bg="#7B8FFF" angle={-12} top="22%" right="12%" size={72} />
-      <Sticker emoji="✨" bg="#f5e642" angle={15} top="18%" right="22%" size={52} />
-      <Sticker emoji="🫶" bg="#C4B5F5" angle={-8} top="55%" right="8%" size={64} />
-      <Sticker emoji="📸" bg="#f2ede4" angle={20} top="30%" left="5%" size={56} />
+      {/* Stickers — hide most on mobile */}
+      <Sticker emoji="😊" bg="#7B8FFF" angle={-12} top="22%" right="12%" size={isMobile ? 48 : 72} mobileHide />
+      <Sticker emoji="✨" bg="#f5e642" angle={15}  top="18%" right="22%" size={isMobile ? 36 : 52} mobileHide />
+      <Sticker emoji="🫶" bg="#C4B5F5" angle={-8}  top="55%" right="8%"  size={isMobile ? 44 : 64} mobileHide />
+      <Sticker emoji="📸" bg="#f2ede4" angle={20}  top="30%" left="5%"   size={isMobile ? 36 : 56} mobileHide />
 
       {/* Headline */}
       <motion.div style={{ y: textY, position: 'relative', zIndex: 1 }}>
         <div style={{
-          fontSize: 'clamp(60px, 10vw, 130px)',
+          fontSize: 'clamp(52px, 10vw, 130px)',
           fontWeight: 900,
           lineHeight: 0.9,
-          letterSpacing: '-5px',
+          letterSpacing: '-4px',
           color: '#f2ede4',
           margin: 0,
-          marginBottom: 40,
+          marginBottom: 32,
         }}>
           {['we build.', 'we ship.'].map((line, i) => (
             <motion.div
@@ -138,10 +141,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55 }}
-          style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}
+          style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 16 : 20, flexWrap: 'wrap' }}
         >
           <p style={{
-            fontSize: 16,
+            fontSize: 15,
             color: 'rgba(242,237,228,0.55)',
             lineHeight: 1.65,
             maxWidth: 420,
@@ -161,7 +164,7 @@ export default function Hero() {
               gap: 10,
               background: '#e63030',
               color: '#fff',
-              padding: '16px 32px',
+              padding: isMobile ? '14px 28px' : '16px 32px',
               borderRadius: 50,
               fontSize: 15,
               fontWeight: 700,
@@ -193,7 +196,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
-          style={{ display: 'flex', gap: 32, marginTop: 40, flexWrap: 'wrap' }}
+          style={{ display: 'flex', gap: isMobile ? 16 : 32, marginTop: 36, flexWrap: 'wrap' }}
         >
           {['75+ projects shipped', '16+ brands built', 'student-led team'].map((b) => (
             <span key={b} style={{
@@ -212,20 +215,16 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* ── Tilted infinite video strip (unchanged logic) ── */}
+      {/* Video strip */}
       <motion.div
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.5 }}
-        style={{ width: '110%', marginTop: 80, position: 'relative', left: '-5%' }}
+        style={{ width: '110%', marginTop: isMobile ? 48 : 80, position: 'relative', left: '-5%' }}
       >
         <div
           ref={stripRef}
-          style={{
-            transform: 'rotate(-3deg)',
-            transformOrigin: 'center center',
-            willChange: 'transform',
-          }}
+          style={{ transform: 'rotate(-3deg)', transformOrigin: 'center center', willChange: 'transform' }}
         >
           <motion.div
             animate={{ x: ['0%', '-50%'] }}
@@ -234,28 +233,21 @@ export default function Hero() {
           >
             {[...VIDEOS, ...VIDEOS].map((src, i) => {
               const idx = i % VIDEOS.length;
+              const w = isMobile ? Math.round(CARD_WIDTHS[idx] * 0.65) : CARD_WIDTHS[idx];
+              const h = isMobile ? Math.round(CARD_HEIGHTS[idx] * 0.65) : CARD_HEIGHTS[idx];
               return (
                 <motion.div
                   key={i}
-                  whileHover={{ scale: 1.05, zIndex: 2 }}
+                  whileHover={!isMobile ? { scale: 1.05, zIndex: 2 } : {}}
                   transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                   style={{
-                    width: CARD_WIDTHS[idx],
-                    height: CARD_HEIGHTS[idx],
-                    borderRadius: 18,
-                    overflow: 'hidden',
-                    flexShrink: 0,
-                    background: '#222',
-                    boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
-                    cursor: 'pointer',
+                    width: w, height: h,
+                    borderRadius: 18, overflow: 'hidden', flexShrink: 0,
+                    background: '#222', boxShadow: '0 12px 40px rgba(0,0,0,0.5)', cursor: 'pointer',
                   }}
                 >
                   <video
-                    src={src}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
+                    src={src} autoPlay muted loop playsInline
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </motion.div>

@@ -1,20 +1,24 @@
 import { motion } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 const team = [
   { name: 'Janeesh Pemmasani', role: 'founder & product lead', img: '/team/janeesh.png' },
 ];
 
 export default function Team() {
+  const isMobile = useIsMobile();
+
   return (
-    <section id="team" style={{ background: '#f2ede4', padding: '120px 60px' }}>
+    <section id="team" style={{ background: '#f2ede4', padding: isMobile ? '80px 20px' : '120px 60px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         {/* Header */}
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          marginBottom: 72,
+          alignItems: isMobile ? 'flex-start' : 'flex-end',
+          marginBottom: isMobile ? 48 : 72,
           flexWrap: 'wrap',
           gap: 24,
         }}>

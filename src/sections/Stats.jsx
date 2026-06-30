@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 function CountUp({ target, suffix = '', duration = 2 }) {
   const [count, setCount] = useState(0);
@@ -21,21 +22,28 @@ function CountUp({ target, suffix = '', duration = 2 }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
+const stats = [
+  { value: 75, suffix: '+', label: 'projects shipped' },
+  { value: 16, suffix: '+', label: 'brands built' },
+  { value: 12, suffix: '+', label: 'student builders' },
+];
+
 export default function Stats() {
+  const isMobile = useIsMobile();
+
   return (
-    <section id="about-us" style={{ background: '#f2ede4', padding: '120px 60px' }}>
+    <section id="about-us" style={{ background: '#f2ede4', padding: isMobile ? '80px 20px' : '120px 60px' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
-        {/* Big headline */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: 80 }}
+          style={{ marginBottom: 60 }}
         >
           <h2 style={{
-            fontSize: 'clamp(44px, 7vw, 96px)',
+            fontSize: 'clamp(40px, 7vw, 96px)',
             fontWeight: 900,
             lineHeight: 0.92,
             letterSpacing: '-4px',
@@ -65,17 +73,13 @@ export default function Stats() {
           </p>
         </motion.div>
 
-        {/* Stats row */}
+        {/* Stats */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 2,
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? 12 : 2,
         }}>
-          {[
-            { value: 75, suffix: '+', label: 'projects shipped' },
-            { value: 16, suffix: '+', label: 'brands built' },
-            { value: 12, suffix: '+', label: 'student builders' },
-          ].map((stat, i) => (
+          {stats.map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40 }}
@@ -85,12 +89,14 @@ export default function Stats() {
               style={{
                 background: i === 1 ? '#0d0d0d' : '#f2ede4',
                 border: '2px solid #0d0d0d',
-                padding: '48px 40px',
-                borderRadius: i === 0 ? '20px 0 0 20px' : i === 2 ? '0 20px 20px 0' : 0,
+                padding: isMobile ? '36px 28px' : '48px 40px',
+                borderRadius: isMobile
+                  ? 20
+                  : i === 0 ? '20px 0 0 20px' : i === 2 ? '0 20px 20px 0' : 0,
               }}
             >
               <div style={{
-                fontSize: 'clamp(52px, 6vw, 80px)',
+                fontSize: 'clamp(48px, 6vw, 80px)',
                 fontWeight: 900,
                 letterSpacing: '-4px',
                 lineHeight: 1,
@@ -116,23 +122,17 @@ export default function Stats() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          style={{ marginTop: 48, display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}
+          style={{ marginTop: 40, display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}
         >
           <motion.a
             href="#services"
             whileHover={{ scale: 1.04, background: '#0d0d0d', color: '#f2ede4' }}
             whileTap={{ scale: 0.97 }}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              background: '#0d0d0d',
-              color: '#f2ede4',
-              padding: '14px 28px',
-              borderRadius: 50,
-              fontSize: 14,
-              fontWeight: 700,
-              transition: 'all 0.2s',
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: '#0d0d0d', color: '#f2ede4',
+              padding: '14px 28px', borderRadius: 50,
+              fontSize: 14, fontWeight: 700, transition: 'all 0.2s',
             }}
           >
             see what we build →
