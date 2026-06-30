@@ -13,13 +13,13 @@ const VIDEOS = [
 ];
 
 const SUBTITLES = [
-  'web platform',
+  'restaurant brand',
+  'gym membership app',
+  'saas dashboard',
+  'e-commerce store',
+  'startup landing',
   'brand identity',
-  'ui/ux design',
-  'full stack app',
-  'ai product',
-  'branding',
-  'landing page',
+  'mobile ui/ux',
 ];
 const CARD_HEIGHTS = [340, 370, 345, 385, 330, 365, 340];
 const CARD_WIDTHS  = [180, 190, 180, 200, 175, 190, 180];
